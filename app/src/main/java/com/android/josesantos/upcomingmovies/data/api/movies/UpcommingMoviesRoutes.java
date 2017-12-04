@@ -1,5 +1,6 @@
 package com.android.josesantos.upcomingmovies.data.api.movies;
 
+import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -17,7 +19,7 @@ import retrofit2.http.POST;
 public interface UpcommingMoviesRoutes {
 
     @GET("movie/upcoming")
-    Call<List<UpcommingMovie>> getUpcommingMoviesList(@Field("page") String page,
-                                                      @Field("language") String language,
-                                                      @Field("api_key") String portal);
+    Call<PageResponse<UpcommingMovie>> getUpcommingMoviesList(@Query("page") String page,
+                                              @Query("language") String language,
+                                              @Query("api_key") String portal);
 }

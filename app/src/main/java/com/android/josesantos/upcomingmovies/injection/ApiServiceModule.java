@@ -17,11 +17,8 @@ import dagger.Provides;
 @Module
 public class ApiServiceModule {
 
-    @Inject
-    Context context;
-
     @Provides
-    UpcommingMoviesService provideUpcommingMoviesService(){
+    UpcommingMoviesService provideUpcommingMoviesService(Context context){
         return new UpcommingMoviesService(context);
     }
 }

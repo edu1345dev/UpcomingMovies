@@ -3,16 +3,20 @@ package com.android.josesantos.upcomingmovies.data.api.movies;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.api.constants.ApiConstants;
 import com.android.josesantos.upcomingmovies.data.api.ApiService;
 import com.android.josesantos.upcomingmovies.data.api.constants.LanguageConstants;
 import com.android.josesantos.upcomingmovies.data.api.RequestHandler;
+import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -25,32 +29,33 @@ import retrofit2.Response;
 
 public class UpcommingMoviesService extends ApiService {
 
+    private static final String TAG = "UpcommingMoviesService";
+
     private final Context context;
     private List<UpcommingMovie> upcommingMovieList = new ArrayList<>();
 
+    @Inject
     public UpcommingMoviesService(Context context) {
-        super();
         this.context = context;
     }
 
-    public void getUpcommingMoviesList(String page, final RequestHandler<List<UpcommingMovie>> requestHandler){
+    public void getUpcommingMoviesList(String page, final RequestHandler<PageResponse<UpcommingMovie>> requestHandler){
         if (isThereInternetConnection()){
             createService(UpcommingMoviesRoutes.class)
                     .getUpcommingMoviesList(page, LanguageConstants.EN_US, ApiConstants.API_KEY)
-                    .enqueue(new Callback<List<UpcommingMovie>>() {
+                    .enqueue(new Callback<PageResponse<UpcommingMovie>>() {
                         @Override
-                        public void onResponse(Call<List<UpcommingMovie>> call, Response<List<UpcommingMovie>> response) {
+                        public void onResponse(Call<PageResponse<UpcommingMovie>> call, Response<PageResponse<UpcommingMovie>> response) {
                             if (response.isSuccessful()){
-                                upcommingMovieList.addAll(response.body());
                                 requestHandler.onSucess(response.body());
                             }else {
-                                requestHandler.onError(response.body().toString());
+                                requestHandler.onError(response.message());
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<List<UpcommingMovie>> call, Throwable t) {
-                            requestHandler.onFailure(t.getMessage());
+                        public void onFailure(Call<PageResponse<UpcommingMovie>> call, Throwable t) {
+                            requestHandler.onError(t.getMessage());
                         }
                     });
         }else {

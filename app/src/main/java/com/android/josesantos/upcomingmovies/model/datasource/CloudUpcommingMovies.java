@@ -5,6 +5,7 @@ import android.util.Log;
 import com.android.josesantos.upcomingmovies.data.api.RequestHandler;
 import com.android.josesantos.upcomingmovies.data.api.constants.ApiConstants;
 import com.android.josesantos.upcomingmovies.data.api.movies.UpcommingMoviesService;
+import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
 import java.util.List;
@@ -19,7 +20,8 @@ import io.reactivex.Observable;
 
 public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     private static final String TAG = "CloudUpcommingMovies";
-    private String page = "1";
+
+    private PageResponse<UpcommingMovie> pageResponse = new PageResponse<>();
 
     @Inject
     UpcommingMoviesService moviesService;
@@ -30,24 +32,30 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
 
     @Override
     public void loadUpcommingMovies() {
-        moviesService.getUpcommingMoviesList(page, new RequestHandler<List<UpcommingMovie>>() {
+        moviesService.getUpcommingMoviesList(pageResponse.getPage().toString(),
+                new RequestHandler<PageResponse<UpcommingMovie>>() {
             @Override
-            public void onSucess(List<UpcommingMovie> response) {
-                Log.d(TAG, "onSucess: "+response.size());
+            public void onSucess(PageResponse<UpcommingMovie> response) {
+                setPageResponse(response);
             }
 
             @Override
             public void onError(String message) {
-                Log.d(TAG, "onError: "+message);
+
             }
 
             @Override
             public void onFailure(String message) {
-                if (message.equals(ApiConstants.NO_INTERNET_CONNECTION)){
-                    Log.d(TAG, "onFailure: "+ApiConstants.NO_INTERNET_CONNECTION);
-                }
+
             }
         });
+    }
+
+    private void setPageResponse(PageResponse<UpcommingMovie> response) {
+        pageResponse.setPage(response.getPage()+1);
+        pageResponse.getResults().addAll(response.getResults());
+        pageResponse.setTotalPages(response.getTotalPages());
+        pageResponse.setTotalResults(response.getTotalResults());
     }
 
     @Override

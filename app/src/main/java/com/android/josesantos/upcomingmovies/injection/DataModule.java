@@ -21,17 +21,6 @@ public class DataModule {
     @Inject
     CloudUpcommingMovies cloudUpcommingMovies;
 
-    private Application application;
-
-    public DataModule(Application application) {
-        this.application = application;
-    }
-
-    @Provides
-    Context providesApplicationContext(){
-        return application.getApplicationContext();
-    }
-
     @Provides
     UpcommingMoviesRepo provideUpcommingMoviesRepo(){
         return new UpcommingMoviesRepoImpl(cloudUpcommingMovies);

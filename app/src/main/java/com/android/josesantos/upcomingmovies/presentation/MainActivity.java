@@ -11,12 +11,16 @@ import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.model.usecase.GetUpcommingMoviesList;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
 
+import javax.inject.Inject;
+
 /**
  * Created by josesantos on 04/12/17.
  */
 
 public class MainActivity extends AppCompatActivity{
 
+    @Inject
+    LoadUpcommingMovieList loadUpcommingMovieList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,9 +34,11 @@ public class MainActivity extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoadUpcommingMovieList upcommingMovieList =
-                        new LoadUpcommingMovieList();
-                upcommingMovieList.execute();
+//                LoadUpcommingMovieList upcommingMovieList =
+//                        new LoadUpcommingMovieList();
+//                upcommingMovieList.execute();
+
+                loadUpcommingMovieList.execute();
             }
         });
     }

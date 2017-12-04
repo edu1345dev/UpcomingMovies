@@ -17,6 +17,7 @@ public class LoadUpcommingMovieList {
     @Inject
     UpcommingMoviesRepoImpl upcommingMoviesRepo;
 
+    @Inject
     public LoadUpcommingMovieList() {
     }
 
