@@ -6,4 +6,5 @@ package com.android.josesantos.upcomingmovies.data.api.constants;
 
 public class ApiConstants {
     public static String API_KEY = "1f54bd990f1cdfb230adb312546d765d";
+    public static String NO_INTERNET_CONNECTION = "no_internet_connection";
 }

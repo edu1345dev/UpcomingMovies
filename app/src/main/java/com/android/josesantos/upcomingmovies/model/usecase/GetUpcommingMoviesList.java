@@ -13,12 +13,11 @@ import javax.inject.Inject;
 
 public class GetUpcommingMoviesList {
 
-
-    private final UpcommingMoviesRepo upcommingMoviesRepo;
+    @Inject
+    public UpcommingMoviesRepo upcommingMoviesRepo;
 
     @Inject
-    public GetUpcommingMoviesList(UpcommingMoviesRepo repo) {
-        this.upcommingMoviesRepo = repo;
+    public GetUpcommingMoviesList() {
     }
 
     public List<UpcommingMovie> execute(){

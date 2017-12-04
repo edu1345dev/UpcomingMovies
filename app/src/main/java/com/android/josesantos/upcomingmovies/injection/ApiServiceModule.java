@@ -1,7 +1,11 @@
 package com.android.josesantos.upcomingmovies.injection;
 
+import android.content.Context;
+
 import com.android.josesantos.upcomingmovies.data.api.ApiService;
 import com.android.josesantos.upcomingmovies.data.api.movies.UpcommingMoviesService;
+
+import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;
@@ -11,9 +15,13 @@ import dagger.Provides;
  */
 
 @Module
-class ApiServiceModule {
+public class ApiServiceModule {
+
+    @Inject
+    Context context;
+
     @Provides
-    UpcommingMoviesService provideUpcommingMoviesService(UpcommingMoviesService service){
-        return service;
+    UpcommingMoviesService provideUpcommingMoviesService(){
+        return new UpcommingMoviesService(context);
     }
 }

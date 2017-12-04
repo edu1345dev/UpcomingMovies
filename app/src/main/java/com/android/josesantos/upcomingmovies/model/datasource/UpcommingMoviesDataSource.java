@@ -9,5 +9,6 @@ import java.util.List;
  */
 
 public interface UpcommingMoviesDataSource {
+    void loadUpcommingMovies();
     List<UpcommingMovie> getUpcommingMoviesData();
 }

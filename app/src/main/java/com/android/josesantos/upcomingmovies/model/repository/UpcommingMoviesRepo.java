@@ -9,5 +9,6 @@ import java.util.List;
  */
 
 public interface UpcommingMoviesRepo {
+    void loadUpcommingMovies();
     List<UpcommingMovie> getUpcommingMoviesList();
 }

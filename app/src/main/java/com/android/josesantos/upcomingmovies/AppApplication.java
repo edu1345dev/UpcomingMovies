@@ -2,8 +2,11 @@ package com.android.josesantos.upcomingmovies;
 
 import android.app.Application;
 
+import com.android.josesantos.upcomingmovies.injection.ApiServiceModule;
 import com.android.josesantos.upcomingmovies.injection.AppComponent;
 import com.android.josesantos.upcomingmovies.injection.DaggerAppComponent;
+import com.android.josesantos.upcomingmovies.injection.DataModule;
+import com.android.josesantos.upcomingmovies.injection.PresentationModule;
 
 /**
  * Created by josesantos on 03/12/17.
