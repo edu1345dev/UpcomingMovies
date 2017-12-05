@@ -1,11 +1,14 @@
 package com.android.josesantos.upcomingmovies.model.repository;
 
+import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 import com.android.josesantos.upcomingmovies.model.datasource.CloudUpcommingMovies;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 /**
  * Created by josesantos on 04/12/17.
@@ -21,8 +24,8 @@ public class UpcommingMoviesRepoImpl implements UpcommingMoviesRepo {
     }
 
     @Override
-    public void loadUpcommingMovies() {
-        cloudUpcommingMovies.loadUpcommingMovies();
+    public Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies() {
+        return cloudUpcommingMovies.loadUpcommingMovies();
     }
 
     @Override

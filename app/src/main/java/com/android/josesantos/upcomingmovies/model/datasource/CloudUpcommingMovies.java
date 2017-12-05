@@ -1,18 +1,21 @@
 package com.android.josesantos.upcomingmovies.model.datasource;
 
-import android.util.Log;
-
 import com.android.josesantos.upcomingmovies.data.api.RequestHandler;
-import com.android.josesantos.upcomingmovies.data.api.constants.ApiConstants;
-import com.android.josesantos.upcomingmovies.data.api.movies.UpcommingMoviesService;
+import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -31,24 +34,12 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     @Override
-    public void loadUpcommingMovies() {
-        moviesService.getUpcommingMoviesList(pageResponse.getPage().toString(),
-                new RequestHandler<PageResponse<UpcommingMovie>>() {
-            @Override
-            public void onSucess(PageResponse<UpcommingMovie> response) {
-                setPageResponse(response);
-            }
+    public Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies() {
+        return moviesService.getUpcommingMoviesList(pageResponse.getPage().toString())
+                .doOnNext(upcommingMoviePageResponse -> {
+                    setPageResponse(upcommingMoviePageResponse);
+                });
 
-            @Override
-            public void onError(String message) {
-
-            }
-
-            @Override
-            public void onFailure(String message) {
-
-            }
-        });
     }
 
     private void setPageResponse(PageResponse<UpcommingMovie> response) {
@@ -60,6 +51,6 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
 
     @Override
     public List<UpcommingMovie> getUpcommingMoviesData() {
-        return moviesService.getUpcommingMovieList();
+        return pageResponse.getResults();
     }
 }
