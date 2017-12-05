@@ -3,9 +3,11 @@ package com.android.josesantos.upcomingmovies.presentation;
 import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
+import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
 
 import java.util.List;
@@ -24,11 +26,17 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     UpcommingMoviesContract.View view;
     LoadUpcommingMovieList loadUpcommingMovieList;
     GetGenres getGenres;
+    GetMovieDbConfiguration getMovieDbConfiguration;
+
 
     @Inject
-    public UpcommingMoviesPresenter(LoadUpcommingMovieList loadUpcommingMovieList, GetGenres getGenres) {
+    public UpcommingMoviesPresenter(LoadUpcommingMovieList loadUpcommingMovieList,
+                                    GetGenres getGenres,
+                                    GetMovieDbConfiguration getMovieDbConfiguration) {
+
         this.loadUpcommingMovieList = loadUpcommingMovieList;
         this.getGenres = getGenres;
+        this.getMovieDbConfiguration = getMovieDbConfiguration;
     }
 
 
@@ -59,6 +67,11 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     @Override
     public List<Genres.Genre> getGenresList() {
         return getGenres.execute();
+    }
+
+    @Override
+    public MovieDbConfiguration getMovieDbConfig() {
+        return getMovieDbConfiguration.execute();
     }
 
     private final class UserListObserver extends DisposableObserver<PageResponse<UpcommingMovie>> {

@@ -36,6 +36,7 @@ public class UpcommingMoviesActivity extends AppCompatActivity implements Upcomm
         button.setOnClickListener(view -> {
             presenter.loadUpcommingMovies();
             presenter.getGenresList();
+            presenter.getMovieDbConfig();
         });
     }
 

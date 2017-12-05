@@ -2,24 +2,16 @@ package com.android.josesantos.upcomingmovies.model.datasource;
 
 import android.content.SharedPreferences;
 
-import com.android.josesantos.upcomingmovies.data.api.RequestHandler;
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 import com.google.gson.Gson;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-
 import javax.inject.Inject;
-
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -29,6 +21,7 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     private static final String TAG = "CloudUpcommingMovies";
 
     private static String GENRES = "genres";
+    private static String MOVIE_DB_CONFIG = "movie_db_config";
     private PageResponse<UpcommingMovie> pageResponse = new PageResponse<>();
 
     @Inject
@@ -45,6 +38,26 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
         return moviesService.getUpcommingMoviesList(pageResponse.getPage().toString())
                 .doOnNext(this::setPageResponse);
 
+    }
+
+    @Override
+    public Observable<MovieDbConfiguration> loadMovieDbConfigurations() {
+        return moviesService.getMovieDbConfiguration()
+                .doOnNext(this::cacheMovieDbConfig);
+    }
+
+    private void cacheMovieDbConfig(MovieDbConfiguration movieDbConfiguration) {
+        Gson gson = new Gson();
+        String movieDbConfig = gson.toJson(movieDbConfiguration);
+
+        sharedPreferences.edit().putString(MOVIE_DB_CONFIG,movieDbConfig).apply();
+    }
+
+    @Override
+    public MovieDbConfiguration getMovieDbConfiguration() {
+        Gson gson = new Gson();
+        String movieDbConfig = sharedPreferences.getString(MOVIE_DB_CONFIG,"");
+        return gson.fromJson(movieDbConfig, MovieDbConfiguration.class);
     }
 
     @Override

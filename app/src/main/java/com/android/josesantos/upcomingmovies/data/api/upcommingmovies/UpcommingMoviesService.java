@@ -9,6 +9,7 @@ import com.android.josesantos.upcomingmovies.data.api.ApiService;
 import com.android.josesantos.upcomingmovies.data.api.constants.LanguageConstants;
 import com.android.josesantos.upcomingmovies.data.api.exception.NetworkConnectionException;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
@@ -56,6 +57,23 @@ public class UpcommingMoviesService extends ApiService {
                 try {
                     e.onNext(createService(UpcommingMoviesRoutes.class)
                             .getGenres(LanguageConstants.EN_US).blockingFirst());
+                    e.onComplete();
+                }catch (Exception e1){
+                    e.onError(new NetworkConnectionException(e1.getCause()));
+                }
+            }else {
+                e.onError(new NetworkConnectionException());
+            }
+        });
+    }
+
+    public Observable<MovieDbConfiguration> getMovieDbConfiguration(){
+        Log.d(TAG, "getMovieDbConfiguration: ");
+        return Observable.create(e -> {
+            if (isThereInternetConnection()){
+                try {
+                    e.onNext(createService(UpcommingMoviesRoutes.class)
+                            .getMovieDbConfiguration().blockingFirst());
                     e.onComplete();
                 }catch (Exception e1){
                     e.onError(new NetworkConnectionException(e1.getCause()));

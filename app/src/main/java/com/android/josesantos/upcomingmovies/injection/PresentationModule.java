@@ -1,6 +1,7 @@
 package com.android.josesantos.upcomingmovies.injection;
 
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
+import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.model.usecase.GetUpcommingMoviesList;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesContract;
@@ -21,13 +22,14 @@ public class PresentationModule {
 
     @Inject
     LoadUpcommingMovieList loadUpcommingMovieList;
-
     @Inject
     GetGenres getGenres;
+    @Inject
+    GetMovieDbConfiguration getMovieDbConfiguration;
 
     @Provides
     @Singleton
     UpcommingMoviesContract.Presenter provideUpcommingMoviesPresenter(){
-        return new UpcommingMoviesPresenter(loadUpcommingMovieList, getGenres);
+        return new UpcommingMoviesPresenter(loadUpcommingMovieList, getGenres, getMovieDbConfiguration);
     }
 }

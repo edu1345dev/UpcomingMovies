@@ -1,6 +1,7 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public class UpcommingMoviesContract {
         void loadUpcommingMovies();
 
         List<Genres.Genre> getGenresList();
+
+        MovieDbConfiguration getMovieDbConfig();
     }
 }

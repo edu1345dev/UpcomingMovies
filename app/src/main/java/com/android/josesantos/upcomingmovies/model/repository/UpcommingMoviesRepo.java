@@ -1,6 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.repository;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
@@ -14,7 +15,11 @@ import io.reactivex.Observable;
 
 public interface UpcommingMoviesRepo {
     Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies();
-    void loadGenres();
+    Observable<Genres> loadGenres();
     List<Genres.Genre> getGenres();
     List<UpcommingMovie> getUpcommingMoviesList();
+
+    Observable<MovieDbConfiguration>  loadMovieDbConfiguration();
+
+    MovieDbConfiguration getMovieDbConfiguration();
 }
