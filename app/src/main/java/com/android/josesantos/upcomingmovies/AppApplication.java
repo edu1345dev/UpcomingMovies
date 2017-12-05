@@ -15,6 +15,7 @@ import com.android.josesantos.upcomingmovies.model.usecase.LoadMovieDbConfigurat
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
 import io.reactivex.observers.DisposableObserver;
 
 /**

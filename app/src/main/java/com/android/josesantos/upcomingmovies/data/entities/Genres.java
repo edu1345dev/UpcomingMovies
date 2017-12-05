@@ -16,7 +16,7 @@ public class Genres {
     @Expose
     private List<Genre> genres = new ArrayList<>();
 
-    public List<Genre> getGenres() {
+    public List<Genre> getGenresList() {
         return genres;
     }
 

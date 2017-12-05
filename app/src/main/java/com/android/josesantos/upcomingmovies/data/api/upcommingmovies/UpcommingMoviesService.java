@@ -51,7 +51,7 @@ public class UpcommingMoviesService extends ApiService {
     }
 
     public Observable<Genres> getGenres(){
-        Log.d(TAG, "getGenres: ");
+        Log.d(TAG, "getGenresList: ");
         return Observable.create(e -> {
             if (isThereInternetConnection()){
                 try {
