@@ -2,6 +2,7 @@ package com.android.josesantos.upcomingmovies.injection;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,6 +14,7 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
+    private static String APP_SHARED_PREFS = "app_shared_prefs";
     Application application;
 
     public AppModule(Application application) {
@@ -24,4 +26,8 @@ public class AppModule {
         return application;
     }
 
+    @Provides
+    SharedPreferences providesSharedPreferences(){
+        return application.getApplicationContext().getSharedPreferences(APP_SHARED_PREFS, Context.MODE_PRIVATE);
+    }
 }

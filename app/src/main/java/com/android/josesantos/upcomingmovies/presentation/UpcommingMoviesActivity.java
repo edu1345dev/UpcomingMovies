@@ -33,7 +33,10 @@ public class UpcommingMoviesActivity extends AppCompatActivity implements Upcomm
         AppApplication.getAppComponent().inject(this);
 
         Button button = findViewById(R.id.bt_load);
-        button.setOnClickListener(view -> presenter.loadUpcommingMovies());
+        button.setOnClickListener(view -> {
+            presenter.loadUpcommingMovies();
+            presenter.getGenresList();
+        });
     }
 
     @Override

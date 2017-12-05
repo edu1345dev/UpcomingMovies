@@ -8,6 +8,7 @@ import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRep
 import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

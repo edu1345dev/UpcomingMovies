@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -14,6 +16,7 @@ import dagger.Provides;
 @Module
 public class ApiServiceModule {
 
+    @Singleton
     @Provides
     UpcommingMoviesService provideUpcommingMoviesService(Context context){
         return new UpcommingMoviesService(context);

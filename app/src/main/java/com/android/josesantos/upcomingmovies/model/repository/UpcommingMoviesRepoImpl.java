@@ -1,5 +1,6 @@
 package com.android.josesantos.upcomingmovies.model.repository;
 
+import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 import com.android.josesantos.upcomingmovies.model.datasource.CloudUpcommingMovies;
@@ -26,6 +27,16 @@ public class UpcommingMoviesRepoImpl implements UpcommingMoviesRepo {
     @Override
     public Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies() {
         return cloudUpcommingMovies.loadUpcommingMovies();
+    }
+
+    @Override
+    public void loadGenres() {
+        cloudUpcommingMovies.loadGenres();
+    }
+
+    @Override
+    public List<Genres.Genre> getGenres() {
+        return cloudUpcommingMovies.getGenres();
     }
 
     @Override

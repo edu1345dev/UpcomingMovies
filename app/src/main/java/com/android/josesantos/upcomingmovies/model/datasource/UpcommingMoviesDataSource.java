@@ -1,5 +1,6 @@
 package com.android.josesantos.upcomingmovies.model.datasource;
 
+import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 
@@ -13,5 +14,7 @@ import io.reactivex.Observable;
 
 public interface UpcommingMoviesDataSource {
     Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies();
+    Observable<Genres> loadGenres();
+    List<Genres.Genre> getGenres();
     List<UpcommingMovie> getUpcommingMoviesData();
 }
