@@ -53,6 +53,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     @Override
     public void onPause() {
         view = null;
+        loadUpcommingMovieList.dispose();
     }
 
     private boolean hasViewAttached(){
@@ -61,6 +62,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     @Override
     public void loadUpcommingMovies() {
+        view.showLoading();
         loadUpcommingMovieList.execute(new UserListObserver());
     }
 
@@ -87,11 +89,17 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, "onError: ");
+            if (hasViewAttached()){
+                view.hideLoading();
+            }
         }
 
         @Override
         public void onComplete() {
             Log.d(TAG, "onComplete: ");
+            if (hasViewAttached()){
+                view.hideLoading();
+            }
         }
     }
 }

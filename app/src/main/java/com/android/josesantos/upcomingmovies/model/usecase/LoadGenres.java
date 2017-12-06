@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by josesantos on 05/12/17.
  */
 
-public class LoadGenres {
+public class LoadGenres extends BaseUseCase<Genres>{
 
     @Inject
     UpcommingMoviesRepoImpl upcommingMoviesRepo;
@@ -26,5 +26,7 @@ public class LoadGenres {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(disposableObserver);
+
+        addDisposable(disposableObserver);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 public class UpcommingMoviesContract {
-    public interface View{
+    public interface View extends LoadView{
         void onMoviesLoaded(List<UpcommingMovie> upcommingMovieList);
     }
 

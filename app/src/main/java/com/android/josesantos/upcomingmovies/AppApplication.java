@@ -1,6 +1,7 @@
 package com.android.josesantos.upcomingmovies;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
@@ -24,6 +25,7 @@ import io.reactivex.observers.DisposableObserver;
 
 public class AppApplication extends Application {
 
+    private static final String TAG = "AppApplication";
     private static AppComponent appComponent;
     @Inject
     LoadGenres loadGenres;
@@ -45,17 +47,17 @@ public class AppApplication extends Application {
         loadMovieDbConfiguration.execute(new DisposableObserver<MovieDbConfiguration>() {
             @Override
             public void onNext(MovieDbConfiguration value) {
-
+                Log.d(TAG, "onNext: load configuration file");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e(TAG, "onError: ", e.getCause());
             }
 
             @Override
             public void onComplete() {
-
+                Log.d(TAG, "onComplete: finished loading configuration file");
             }
         });
     }
@@ -64,17 +66,17 @@ public class AppApplication extends Application {
         loadGenres.execute(new DisposableObserver<Genres>() {
             @Override
             public void onNext(Genres value) {
-
+                Log.d(TAG, "onNext: load genres");
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.e(TAG, "onError: ", e.getCause());
             }
 
             @Override
             public void onComplete() {
-
+                Log.d(TAG, "onComplete: finished loading genres");
             }
         });
     }

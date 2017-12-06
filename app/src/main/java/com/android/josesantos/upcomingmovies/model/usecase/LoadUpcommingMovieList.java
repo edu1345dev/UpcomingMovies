@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by josesantos on 04/12/17.
  */
 
-public class LoadUpcommingMovieList {
+public class LoadUpcommingMovieList extends BaseUseCase<PageResponse<UpcommingMovie>>{
 
     @Inject
     UpcommingMoviesRepoImpl upcommingMoviesRepo;
@@ -29,5 +29,6 @@ public class LoadUpcommingMovieList {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
+        addDisposable(observer);
     }
 }

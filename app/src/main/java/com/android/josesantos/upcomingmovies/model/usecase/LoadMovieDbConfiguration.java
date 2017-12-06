@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by josesantos on 05/12/17.
  */
 
-public class LoadMovieDbConfiguration {
+public class LoadMovieDbConfiguration extends BaseUseCase<MovieDbConfiguration>{
 
     @Inject
     UpcommingMoviesRepoImpl upcommingMoviesRepo;
@@ -27,5 +27,7 @@ public class LoadMovieDbConfiguration {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(disposableObserver);
+
+        addDisposable(disposableObserver);
     }
 }

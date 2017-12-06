@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_upcomming"
+        icon="@drawable/ic_home"
+        title="Upcomming"
+        />
+    <tab
+        id="@+id/tab_movies"
+        icon="@drawable/ic_car"
+        title="Movies"
+        />
+</tabs>

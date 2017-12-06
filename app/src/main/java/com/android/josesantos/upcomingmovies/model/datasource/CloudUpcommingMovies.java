@@ -1,5 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.datasource;
 
+import android.util.Log;
+
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
@@ -8,8 +10,13 @@ import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
 import com.android.josesantos.upcomingmovies.data.local.DataStoreImpl;
 
 import java.util.List;
+
 import javax.inject.Inject;
+
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -68,7 +75,7 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     private void setPageResponse(PageResponse<UpcommingMovie> response) {
-        pageResponse.setPage(response.getPage()+1);
+        pageResponse.setPage(response.getPage() + 1);
         pageResponse.getResults().addAll(response.getResults());
         pageResponse.setTotalPages(response.getTotalPages());
         pageResponse.setTotalResults(response.getTotalResults());

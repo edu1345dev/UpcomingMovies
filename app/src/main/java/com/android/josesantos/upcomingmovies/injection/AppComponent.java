@@ -1,7 +1,8 @@
 package com.android.josesantos.upcomingmovies.injection;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
-import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesActivity;
+import com.android.josesantos.upcomingmovies.presentation.MainActivity;
+import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesFragment;
 
 import javax.inject.Singleton;
 
@@ -15,5 +16,7 @@ import dagger.Component;
 public interface AppComponent {
     void inject(AppApplication touchCommandApplication);
 
-    void inject(UpcommingMoviesActivity upcommingMoviesActivity);
+    void inject(UpcommingMoviesFragment upcommingMoviesFragment);
+
+    void inject(MainActivity mainActivity);
 }
