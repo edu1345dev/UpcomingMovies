@@ -1,10 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.usecase;
 
-import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -20,7 +17,7 @@ public class GetMovieDbConfiguration {
     public GetMovieDbConfiguration() {
     }
 
-    public MovieDbConfiguration execute(){
+    public MovieConfiguration execute(){
         return upcommingMoviesRepo.getMovieDbConfiguration();
     }
 }

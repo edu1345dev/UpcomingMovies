@@ -1,45 +1,34 @@
 package com.android.josesantos.upcomingmovies.data.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by josesantos on 06/12/17.
+ * Created by josesantos on 07/12/17.
  */
 
 public class MovieWrapper {
-
-    List<Movie> movieList = new ArrayList<>();
+    @SerializedName("movie")
+    Movie movie;
+    @SerializedName("genres")
     Genres genres;
-    MovieDbConfiguration movieDbConfiguration;
+    @SerializedName("movie_config")
+    MovieConfiguration movieConfiguration;
 
-    public MovieWrapper(List<Movie> movieList, Genres genres, MovieDbConfiguration movieDbConfiguration) {
-        this.movieList = movieList;
+    public MovieWrapper(Movie movie, Genres genres, MovieConfiguration movieConfiguration) {
+        this.movie = movie;
         this.genres = genres;
-        this.movieDbConfiguration = movieDbConfiguration;
+        this.movieConfiguration = movieConfiguration;
     }
 
-    public List<Movie> getMovieList() {
-        return movieList;
-    }
-
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
+    public Movie getMovie() {
+        return movie;
     }
 
     public Genres getGenres() {
         return genres;
     }
 
-    public void setGenres(Genres genres) {
-        this.genres = genres;
-    }
-
-    public MovieDbConfiguration getMovieDbConfiguration() {
-        return movieDbConfiguration;
-    }
-
-    public void setMovieDbConfiguration(MovieDbConfiguration movieDbConfiguration) {
-        this.movieDbConfiguration = movieDbConfiguration;
+    public MovieConfiguration getMovieConfiguration() {
+        return movieConfiguration;
     }
 }

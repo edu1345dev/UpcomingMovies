@@ -2,7 +2,7 @@ package com.android.josesantos.upcomingmovies.model.datasource;
 
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.local.DataStoreImpl;
@@ -47,17 +47,17 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     @Override
-    public Observable<MovieDbConfiguration> loadMovieDbConfigurations() {
+    public Observable<MovieConfiguration> loadMovieDbConfigurations() {
         return moviesService.getMovieDbConfiguration()
                 .doOnNext(this::cacheMovieDbConfig);
     }
 
-    private void cacheMovieDbConfig(MovieDbConfiguration movieDbConfiguration) {
-        dataStore.cacheMovieDbConfig(movieDbConfiguration);
+    private void cacheMovieDbConfig(MovieConfiguration movieConfiguration) {
+        dataStore.cacheMovieDbConfig(movieConfiguration);
     }
 
     @Override
-    public MovieDbConfiguration getMovieDbConfiguration() {
+    public MovieConfiguration getMovieDbConfiguration() {
         return dataStore.getMovieDbConfig();
     }
 

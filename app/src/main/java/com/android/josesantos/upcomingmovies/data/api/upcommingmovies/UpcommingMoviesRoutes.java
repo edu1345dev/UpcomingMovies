@@ -1,7 +1,7 @@
 package com.android.josesantos.upcomingmovies.data.api.upcommingmovies;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 
@@ -29,5 +29,5 @@ public interface UpcommingMoviesRoutes {
     Observable<Genres> getGenres(@Query("language") String language);
 
     @GET("configuration")
-    Observable<MovieDbConfiguration> getMovieDbConfiguration();
+    Observable<MovieConfiguration> getMovieDbConfiguration();
 }

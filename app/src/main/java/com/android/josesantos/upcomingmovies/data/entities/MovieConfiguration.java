@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by josesantos on 05/12/17.
  */
 
-public class MovieDbConfiguration {
+public class MovieConfiguration {
 
     @SerializedName("images")
     @Expose

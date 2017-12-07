@@ -10,9 +10,10 @@ import android.widget.TextView;
 
 import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
-import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieListWrapper;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
+import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,15 +28,20 @@ import java.util.List;
 public class UpcommingMoviesAdapter extends RecyclerView.Adapter<UpcommingMoviesAdapter.UpcommingMovieView> {
     private static final String TAG = "UpcommingMoviesAdapter";
     private final Genres genres;
-    MovieDbConfiguration movieDbConfiguration;
+    MovieConfiguration movieConfiguration;
     List<Movie> movieList;
     Context context;
+    OnMovieClickListener onMovieClickListener;
 
-    public UpcommingMoviesAdapter(MovieWrapper movieWrapper, Context context) {
-        this.movieDbConfiguration = movieWrapper.getMovieDbConfiguration();
-        this.movieList = movieWrapper.getMovieList();
+    public UpcommingMoviesAdapter(MovieListWrapper movieListWrapper, Context context) {
+        this.movieConfiguration = movieListWrapper.getMovieConfiguration();
+        this.movieList = movieListWrapper.getMovieList();
         this.context = context;
-        this.genres = movieWrapper.getGenres();
+        this.genres = movieListWrapper.getGenres();
+    }
+
+    public void setOnMovieClickListener(OnMovieClickListener onMovieClickListener) {
+        this.onMovieClickListener = onMovieClickListener;
     }
 
     @Override
@@ -48,9 +54,12 @@ public class UpcommingMoviesAdapter extends RecyclerView.Adapter<UpcommingMovies
     public void onBindViewHolder(UpcommingMovieView holder, int position) {
         Movie movie = movieList.get(position);
 
-        String url = movieDbConfiguration.getImages().getBaseUrl()
-                + movieDbConfiguration.getImages().getBackdropSizes().get(1)
-                + movie.getBackdropPath();
+        String url = movie.getBackdropCompleteUrl(movieConfiguration);
+
+        //if there is no backdrop, tries to use poster
+        if (url == null){
+            url = movie.getPosterCompleteUrl(movieConfiguration);
+        }
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(context.getResources().getDrawable(R.drawable.place_holder_movie))
@@ -63,22 +72,31 @@ public class UpcommingMoviesAdapter extends RecyclerView.Adapter<UpcommingMovies
                 .load(url)
                 .into(holder.background);
 
-        holder.name.setText(movie.getTitle());
-        holder.genres.setText(genres.getGenresText(movie.getGenreIds()));
-        holder.release.setText(movie.getReleaseDate());
-
-        // TODO: 07/12/17 remove on final version
-        if (movie.getGenreIds().isEmpty()) {
-            holder.genres.append("  NO GENRES");
+        if (movie.getTitle() != null){
+            holder.name.setVisibility(View.VISIBLE);
+            holder.name.setText(movie.getTitle());
+        }else {
+            holder.name.setVisibility(View.GONE);
         }
 
-        if (movie.getBackdropPath() == null) {
-            holder.genres.append("  NO BACKDROP");
+        if (!movie.getGenreIds().isEmpty()){
+            holder.genres.setVisibility(View.VISIBLE);
+            holder.genres.setText(genres.getGenresText(movie.getGenreIds()));
+        }else {
+            holder.genres.setVisibility(View.GONE);
         }
 
-        if (movie.getPosterPath() == null) {
-            holder.genres.append("  NO POSTER");
+        if (movie.getReleaseDate() != null){
+            holder.release.setVisibility(View.VISIBLE);
+            holder.release.setText(movie.getReleaseDate());
+        }else {
+            holder.release.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(view -> {
+            MovieWrapper movieWrapper = new MovieWrapper(movieList.get(position), genres, movieConfiguration);
+            onMovieClickListener.onClick(movieWrapper);
+        });
     }
 
     @Override

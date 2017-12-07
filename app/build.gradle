@@ -17,7 +17,7 @@ android {
         }
     }
 
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
 

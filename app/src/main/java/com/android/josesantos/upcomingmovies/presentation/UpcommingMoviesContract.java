@@ -1,8 +1,8 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
-import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieListWrapper;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 
 import java.util.List;
@@ -29,8 +29,8 @@ public class UpcommingMoviesContract {
 
         Genres getGenres();
 
-        MovieDbConfiguration getMovieDbConfig();
+        MovieConfiguration getMovieDbConfig();
 
-        MovieWrapper getMovieWrapper();
+        MovieListWrapper getMovieWrapper();
     }
 }

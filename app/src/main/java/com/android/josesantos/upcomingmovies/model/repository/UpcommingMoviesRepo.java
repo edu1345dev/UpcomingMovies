@@ -2,7 +2,7 @@ package com.android.josesantos.upcomingmovies.model.repository;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public interface UpcommingMoviesRepo {
     Genres getGenres();
     List<Movie> getUpcommingMoviesList();
 
-    Observable<MovieDbConfiguration>  loadMovieDbConfiguration();
+    Observable<MovieConfiguration>  loadMovieDbConfiguration();
 
-    MovieDbConfiguration getMovieDbConfiguration();
+    MovieConfiguration getMovieDbConfiguration();
 
     Observable<PageResponse<Movie>> reloadUpcommingMovies();
 }

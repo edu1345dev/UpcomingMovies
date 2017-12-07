@@ -165,4 +165,24 @@ public class Movie {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+    public String getBackdropCompleteUrl(MovieConfiguration movieConfiguration) {
+        if (getBackdropPath() == null){
+            return null;
+        }
+
+        return movieConfiguration.getImages().getBaseUrl()
+                + movieConfiguration.getImages().getBackdropSizes().get(movieConfiguration.getImages().getBackdropSizes().size()-1)
+                + getBackdropPath();
+    }
+
+    public String getPosterCompleteUrl(MovieConfiguration movieConfiguration) {
+        if (getPosterPath() == null){
+            return null;
+        }
+
+        return movieConfiguration.getImages().getBaseUrl()
+                + movieConfiguration.getImages().getPosterSizes().get(movieConfiguration.getImages().getPosterSizes().size()-1)
+                + getPosterPath();
+    }
 }

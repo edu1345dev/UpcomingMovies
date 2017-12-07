@@ -4,7 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.injection.ApiServiceModule;
 import com.android.josesantos.upcomingmovies.injection.AppComponent;
 import com.android.josesantos.upcomingmovies.injection.AppModule;
@@ -16,7 +16,6 @@ import com.android.josesantos.upcomingmovies.model.usecase.LoadMovieDbConfigurat
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -44,9 +43,9 @@ public class AppApplication extends Application {
     }
 
     private void loadMovieDbConfigAfterStart() {
-        loadMovieDbConfiguration.execute(new DisposableObserver<MovieDbConfiguration>() {
+        loadMovieDbConfiguration.execute(new DisposableObserver<MovieConfiguration>() {
             @Override
-            public void onNext(MovieDbConfiguration value) {
+            public void onNext(MovieConfiguration value) {
                 Log.d(TAG, "onNext: load configuration file");
             }
 

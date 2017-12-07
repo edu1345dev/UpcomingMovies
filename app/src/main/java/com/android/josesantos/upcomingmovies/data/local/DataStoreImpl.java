@@ -3,7 +3,7 @@ package com.android.josesantos.upcomingmovies.data.local;
 import android.content.SharedPreferences;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
@@ -31,9 +31,9 @@ public class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public void cacheMovieDbConfig(MovieDbConfiguration movieDbConfiguration) {
+    public void cacheMovieDbConfig(MovieConfiguration movieConfiguration) {
         Gson gson = new Gson();
-        String movieDbConfig = gson.toJson(movieDbConfiguration);
+        String movieDbConfig = gson.toJson(movieConfiguration);
         sharedPreferences.edit().putString(MOVIE_DB_CONFIG,movieDbConfig).apply();
     }
 
@@ -45,9 +45,9 @@ public class DataStoreImpl implements DataStore {
     }
 
     @Override
-    public MovieDbConfiguration getMovieDbConfig() {
+    public MovieConfiguration getMovieDbConfig() {
         Gson gson = new Gson();
         String movieDbConfig = sharedPreferences.getString(MOVIE_DB_CONFIG,"");
-        return gson.fromJson(movieDbConfig, MovieDbConfiguration.class);
+        return gson.fromJson(movieDbConfig, MovieConfiguration.class);
     }
 }

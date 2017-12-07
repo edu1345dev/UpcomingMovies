@@ -1,5 +1,6 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,13 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
+import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
+import com.android.josesantos.upcomingmovies.presentation.adapter.MovieDetailsActivity;
+import com.android.josesantos.upcomingmovies.presentation.adapter.OnMovieClickListener;
 import com.android.josesantos.upcomingmovies.presentation.adapter.UpcommingMoviesAdapter;
 import com.android.josesantos.upcomingmovies.presentation.custom.EndlessRecyclerViewScrollListener;
+import com.google.gson.Gson;
 
+import java.time.Duration;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,6 +48,18 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
 
     @Inject
     UpcommingMoviesPresenter presenter;
+
+    public static String MOVIE = "movie";
+
+    private OnMovieClickListener onMovieClickListener =
+            movieWrapper -> {
+                Gson gson = new Gson();
+                String movie = gson.toJson(movieWrapper);
+
+                Intent it = new Intent(getActivity(), MovieDetailsActivity.class);
+                it.putExtra(MOVIE, movie);
+                startActivity(it);
+            };
 
     @Nullable
     @Override
@@ -81,6 +100,7 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
         });
 
         mAdapter = new UpcommingMoviesAdapter(presenter.getMovieWrapper(), getContext());
+        mAdapter.setOnMovieClickListener(onMovieClickListener);
         mRecycler.setAdapter(mAdapter);
     }
 

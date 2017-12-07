@@ -3,8 +3,8 @@ package com.android.josesantos.upcomingmovies.presentation;
 import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
-import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieListWrapper;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
@@ -80,15 +80,15 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     }
 
     @Override
-    public MovieDbConfiguration getMovieDbConfig() {
+    public MovieConfiguration getMovieDbConfig() {
         return getMovieDbConfiguration.execute();
     }
 
     @Override
-    public MovieWrapper getMovieWrapper() {
+    public MovieListWrapper getMovieWrapper() {
         Genres genres = getGenres();
-        MovieDbConfiguration config = getMovieDbConfig();
-        return new MovieWrapper(new ArrayList<>(), genres, config);
+        MovieConfiguration config = getMovieDbConfig();
+        return new MovieListWrapper(new ArrayList<>(), genres, config);
     }
 
     private final class UserListObserver extends DisposableObserver<PageResponse<Movie>> {

@@ -10,7 +10,7 @@ import com.android.josesantos.upcomingmovies.data.api.constants.LanguageConstant
 import com.android.josesantos.upcomingmovies.data.api.exception.NetworkConnectionException;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 
 import java.text.SimpleDateFormat;
@@ -68,8 +68,8 @@ public class UpcommingMoviesService extends ApiService {
         });
     }
 
-    public Observable<MovieDbConfiguration> getMovieDbConfiguration(){
-        Log.d(TAG, "getMovieDbConfiguration: ");
+    public Observable<MovieConfiguration> getMovieDbConfiguration(){
+        Log.d(TAG, "getMovieConfiguration: ");
         return Observable.create(e -> {
             if (isThereInternetConnection()){
                 try {
