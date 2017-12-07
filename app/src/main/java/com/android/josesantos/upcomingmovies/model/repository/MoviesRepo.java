@@ -13,7 +13,7 @@ import io.reactivex.Observable;
  * Created by josesantos on 03/12/17.
  */
 
-public interface UpcommingMoviesRepo {
+public interface MoviesRepo {
     Observable<PageResponse<Movie>> loadUpcommingMovies();
     Observable<Genres> loadGenres();
     Genres getGenres();

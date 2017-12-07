@@ -2,6 +2,7 @@ package com.android.josesantos.upcomingmovies.injection;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.presentation.MainActivity;
+import com.android.josesantos.upcomingmovies.presentation.SplashScreenActivity;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesFragment;
 
 import javax.inject.Singleton;
@@ -19,4 +20,6 @@ public interface AppComponent {
     void inject(UpcommingMoviesFragment upcommingMoviesFragment);
 
     void inject(MainActivity mainActivity);
+
+    void inject(SplashScreenActivity splashScreenActivity);
 }

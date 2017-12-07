@@ -66,8 +66,10 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     @Override
     public void loadUpcommingMovies() {
-        view.showLoading();
-        loadUpcommingMovieList.execute(new UserListObserver());
+        if (hasViewAttached()) {
+            view.showLoading();
+            loadUpcommingMovieList.execute(new UserListObserver());
+        }
     }
 
     @Override
@@ -96,9 +98,13 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
         @Override
         public void onNext(PageResponse<Movie> value) {
-            Log.d(TAG, "onNext: ");
+            Log.d(TAG, "onNext: "+value);
             if (hasViewAttached()){
-                view.onMoviesLoaded(value.getResults());
+                if (value.getPage() == 1){
+                    view.onMoviesReload(value.getResults());
+                }else {
+                    view.onMoviesLoaded(value.getResults());
+                }
             }
         }
 

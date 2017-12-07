@@ -4,7 +4,7 @@ import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.model.datasource.CloudUpcommingMovies;
+import com.android.josesantos.upcomingmovies.model.datasource.MoviesDataSource;
 
 import java.util.List;
 
@@ -16,12 +16,13 @@ import io.reactivex.Observable;
  * Created by josesantos on 04/12/17.
  */
 
-public class UpcommingMoviesRepoImpl implements UpcommingMoviesRepo {
+public class MoviesRepoImpl implements MoviesRepo {
 
-    CloudUpcommingMovies cloudUpcommingMovies;
+
+    MoviesDataSource cloudUpcommingMovies;
 
     @Inject
-    public UpcommingMoviesRepoImpl(CloudUpcommingMovies cloudUpcommingMovies) {
+    public MoviesRepoImpl(MoviesDataSource cloudUpcommingMovies) {
         this.cloudUpcommingMovies = cloudUpcommingMovies;
     }
 

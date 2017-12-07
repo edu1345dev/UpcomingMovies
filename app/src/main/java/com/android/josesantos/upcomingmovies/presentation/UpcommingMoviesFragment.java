@@ -11,19 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
 import com.android.josesantos.upcomingmovies.presentation.adapter.MovieDetailsActivity;
 import com.android.josesantos.upcomingmovies.presentation.adapter.OnMovieClickListener;
 import com.android.josesantos.upcomingmovies.presentation.adapter.UpcommingMoviesAdapter;
 import com.android.josesantos.upcomingmovies.presentation.custom.EndlessRecyclerViewScrollListener;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.time.Duration;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -50,6 +50,7 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     UpcommingMoviesPresenter presenter;
 
     public static String MOVIE = "movie";
+    public static String MOVIE_LIST = "movie_list";
 
     private OnMovieClickListener onMovieClickListener =
             movieWrapper -> {
@@ -68,13 +69,6 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
 
         ButterKnife.bind(this, view);
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         AppApplication.getAppComponent().inject(this);
 
         //instancia as views
@@ -82,6 +76,21 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
 
         //configura a swipe refresh view com seus listeners
         configureSwipeRefresh();
+
+        if (savedInstanceState != null){
+            handleOnSavedInstance(savedInstanceState);
+        }
+
+        return view;
+    }
+
+    private void handleOnSavedInstance(Bundle savedInstanceState) {
+        Gson gson = new Gson();
+        String moviesList = savedInstanceState.getString(MOVIE_LIST);
+
+        Type listType = new TypeToken<ArrayList<Movie>>(){}.getType();
+        mAdapter.setMovieList(gson.fromJson(moviesList, listType));
+
     }
 
     public void recyclerInit() {
@@ -115,7 +124,6 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     }
 
     private void onUserRefreshesList() {
-        mAdapter.getMovieList().clear();
         presenter.reloadUpcommingMovies();
     }
 
@@ -132,9 +140,15 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Gson gson = new Gson();
+        outState.putString(MOVIE_LIST, gson.toJson(mAdapter.getMovieList()));
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        presenter.onResume(this);
         if (mAdapter.getMovieList().isEmpty()) {
             presenter.loadUpcommingMovies();
         }
@@ -143,6 +157,17 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onResume(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         presenter.onPause();
     }
 
@@ -170,5 +195,12 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     @Override
     public void onMoviesLoaded(List<Movie> movieList) {
         mAdapter.setMovieList(movieList);
+    }
+
+    @Override
+    public void onMoviesReload(List<Movie> movieList) {
+        mAdapter.getMovieList().clear();
+        mAdapter.setMovieList(movieList);
+        mAdapter.notifyDataSetChanged();
     }
 }

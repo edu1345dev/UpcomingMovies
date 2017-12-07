@@ -2,7 +2,7 @@ package com.android.josesantos.upcomingmovies.model.usecase;
 
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
+import com.android.josesantos.upcomingmovies.model.repository.MoviesRepoImpl;
 
 import javax.inject.Inject;
 
@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 public class LoadUpcommingMovieList extends BaseUseCase<PageResponse<Movie>>{
 
     @Inject
-    UpcommingMoviesRepoImpl upcommingMoviesRepo;
+    MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
     public LoadUpcommingMovieList() {

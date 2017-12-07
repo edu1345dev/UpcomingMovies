@@ -2,7 +2,7 @@ package com.android.josesantos.upcomingmovies.injection;
 
 import android.content.Context;
 
-import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
+import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.MoviesDbService;
 
 import javax.inject.Singleton;
 
@@ -16,9 +16,9 @@ import dagger.Provides;
 @Module
 public class ApiServiceModule {
 
-    @Singleton
     @Provides
-    UpcommingMoviesService provideUpcommingMoviesService(Context context){
-        return new UpcommingMoviesService(context);
+    @Singleton
+    MoviesDbService provideUpcommingMoviesService(Context context){
+        return new MoviesDbService(context);
     }
 }

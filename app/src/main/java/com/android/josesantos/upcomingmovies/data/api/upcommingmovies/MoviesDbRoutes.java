@@ -13,7 +13,7 @@ import retrofit2.http.Query;
  * Created by josesantos on 03/12/17.
  */
 
-public interface UpcommingMoviesRoutes {
+public interface MoviesDbRoutes {
 
 //    @GET("movie/upcoming")
 //    Observable<PageResponse<Movie>> getMoviesList(@Query("page") String page,

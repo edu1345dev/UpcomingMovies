@@ -13,7 +13,7 @@ import io.reactivex.Observable;
  * Created by josesantos on 03/12/17.
  */
 
-public interface UpcommingMoviesDataSource {
+public interface MoviesDataSource {
     Observable<PageResponse<Movie>> loadUpcommingMovies();
     Observable<PageResponse<Movie>> reloadUpcommingMovies();
     Observable<Genres> loadGenres();

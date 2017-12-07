@@ -1,7 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.usecase;
 
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
+import com.android.josesantos.upcomingmovies.model.repository.MoviesRepoImpl;
 
 import javax.inject.Inject;
 
@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 public class GetMovieDbConfiguration {
     @Inject
-    public UpcommingMoviesRepoImpl upcommingMoviesRepo;
+    public MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
     public GetMovieDbConfiguration() {

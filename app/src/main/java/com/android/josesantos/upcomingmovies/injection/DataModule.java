@@ -1,14 +1,13 @@
 package com.android.josesantos.upcomingmovies.injection;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.android.josesantos.upcomingmovies.data.local.DataStore;
 import com.android.josesantos.upcomingmovies.data.local.DataStoreImpl;
-import com.android.josesantos.upcomingmovies.model.datasource.CloudUpcommingMovies;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepo;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
+import com.android.josesantos.upcomingmovies.model.datasource.CloudMoviesDataSource;
+import com.android.josesantos.upcomingmovies.model.datasource.MoviesDataSource;
+import com.android.josesantos.upcomingmovies.model.repository.MoviesRepo;
+import com.android.josesantos.upcomingmovies.model.repository.MoviesRepoImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,17 +22,24 @@ import dagger.Provides;
 public class DataModule {
 
     @Inject
-    CloudUpcommingMovies cloudUpcommingMovies;
-    @Inject
     SharedPreferences sharedPreferences;
 
     @Provides
-    UpcommingMoviesRepo provideUpcommingMoviesRepo(){
-        return new UpcommingMoviesRepoImpl(cloudUpcommingMovies);
+    @Singleton
+    MoviesRepo provideUpcommingMoviesRepo(MoviesRepoImpl repo){
+        return repo;
     }
 
     @Provides
+    @Singleton
     DataStore providesDataStore(){
         return new DataStoreImpl(sharedPreferences);
     }
+
+    @Provides
+    @Singleton
+    MoviesDataSource providesUpcommingMoviesDataSource(CloudMoviesDataSource dataSource){
+        return dataSource;
+    }
 }
+

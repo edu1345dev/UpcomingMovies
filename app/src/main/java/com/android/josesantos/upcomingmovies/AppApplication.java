@@ -26,10 +26,6 @@ public class AppApplication extends Application {
 
     private static final String TAG = "AppApplication";
     private static AppComponent appComponent;
-    @Inject
-    LoadGenres loadGenres;
-    @Inject
-    LoadMovieDbConfiguration loadMovieDbConfiguration;
 
     @Override
     public void onCreate() {
@@ -37,47 +33,6 @@ public class AppApplication extends Application {
 
         initDagger();
         appComponent.inject(this);
-
-        loadGenresAfterStart();
-        loadMovieDbConfigAfterStart();
-    }
-
-    private void loadMovieDbConfigAfterStart() {
-        loadMovieDbConfiguration.execute(new DisposableObserver<MovieConfiguration>() {
-            @Override
-            public void onNext(MovieConfiguration value) {
-                Log.d(TAG, "onNext: load configuration file");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: ", e.getCause());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete: finished loading configuration file");
-            }
-        });
-    }
-
-    private void loadGenresAfterStart() {
-        loadGenres.execute(new DisposableObserver<Genres>() {
-            @Override
-            public void onNext(Genres value) {
-                Log.d(TAG, "onNext: load genres");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: ", e.getCause());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete: finished loading genres");
-            }
-        });
     }
 
     private void initDagger() {

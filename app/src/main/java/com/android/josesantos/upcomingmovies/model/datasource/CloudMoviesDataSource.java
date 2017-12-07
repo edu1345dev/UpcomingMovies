@@ -1,6 +1,6 @@
 package com.android.josesantos.upcomingmovies.model.datasource;
 
-import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
+import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.MoviesDbService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
@@ -17,19 +17,19 @@ import io.reactivex.Observable;
  * Created by josesantos on 03/12/17.
  */
 
-public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
-    private static final String TAG = "CloudUpcommingMovies";
+public class CloudMoviesDataSource implements MoviesDataSource {
+    private static final String TAG = "CloudMoviesDataSource";
 
     private PageResponse<Movie> pageResponse = new PageResponse<>();
 
     @Inject
-    UpcommingMoviesService moviesService;
+    MoviesDbService moviesService;
     @Inject
     DataStoreImpl dataStore;
 
 
     @Inject
-    public CloudUpcommingMovies() {
+    public CloudMoviesDataSource() {
     }
 
     @Override

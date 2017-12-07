@@ -1,7 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.usecase;
 
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepo;
+import com.android.josesantos.upcomingmovies.model.repository.MoviesRepo;
 
 import java.util.List;
 
@@ -14,13 +14,13 @@ import javax.inject.Inject;
 public class GetUpcommingMoviesList {
 
     @Inject
-    public UpcommingMoviesRepo upcommingMoviesRepo;
+    public MoviesRepo moviesRepo;
 
     @Inject
     public GetUpcommingMoviesList() {
     }
 
     public List<Movie> execute(){
-        return upcommingMoviesRepo.getUpcommingMoviesList();
+        return moviesRepo.getUpcommingMoviesList();
     }
 }

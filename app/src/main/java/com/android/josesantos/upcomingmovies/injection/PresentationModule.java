@@ -21,22 +21,9 @@ import dagger.Provides;
 @Module
 public class PresentationModule {
 
-    @Inject
-    LoadUpcommingMovieList loadUpcommingMovieList;
-    @Inject
-    GetGenres getGenres;
-    @Inject
-    GetMovieDbConfiguration getMovieDbConfiguration;
-    @Inject
-    ReloadUpcommingMovieList reloadUpcommingMovieList;
-
     @Provides
     @Singleton
-    UpcommingMoviesContract.Presenter provideUpcommingMoviesPresenter() {
-        return new UpcommingMoviesPresenter(
-                loadUpcommingMovieList,
-                getGenres,
-                getMovieDbConfiguration,
-                reloadUpcommingMovieList);
+    UpcommingMoviesContract.Presenter provideUpcommingMoviesPresenter(UpcommingMoviesPresenter presenter) {
+     return presenter;
     }
 }
