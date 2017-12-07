@@ -58,15 +58,4 @@ public class MoviesDbService extends ApiService {
     private String getCurrentDate() {
         return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     }
-
-    private boolean isThereInternetConnection() {
-        boolean isConnected;
-
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-
-        return isConnected;
-    }
 }

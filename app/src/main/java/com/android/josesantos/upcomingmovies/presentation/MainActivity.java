@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  * Created by josesantos on 04/12/17.
  */
 
-public class MainActivity extends AppCompatActivity implements OnTabReselectListener, OnTabSelectListener {
+public class MainActivity extends BaseActivity implements OnTabReselectListener, OnTabSelectListener {
     private static final String TAG = "MainActivity";
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -147,5 +147,10 @@ public class MainActivity extends AppCompatActivity implements OnTabReselectList
             default:
                 navItemIndex = 0;
         }
+    }
+
+    @Override
+    void onRetryConnection() {
+
     }
 }

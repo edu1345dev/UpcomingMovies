@@ -1,7 +1,13 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +29,7 @@ import io.reactivex.observers.DisposableObserver;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends BaseActivity {
     private static final String TAG = "SplashScreenActivity";
 
     @Inject
@@ -50,25 +56,19 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void loadFirstData() {
-        checkMovieDbConfigCache();
-    }
-
-    private void checkMovieDbConfigCache() {
-        if (getMovieDbConfiguration.execute() == null) {
+        if (isConfigInfoCached()){
+            launchMainActivity();
+        }else if (isThereInternetConnection()) {
             loadMovieDbConfig();
         } else {
-            isMovieDbConfigCached = true;
-            checkGenresCache();
+            showConnectionError();
         }
     }
 
-    private void checkGenresCache() {
-        if (getGenres.execute() == null) {
-            loadGenres();
-        } else {
-            isGenresCached = true;
-            checkBeforeLaunch();
-        }
+    private boolean isConfigInfoCached() {
+        isMovieDbConfigCached = getMovieDbConfiguration.execute() != null;
+        isGenresCached = getGenres.execute() != null;
+        return isMovieDbConfigCached && isGenresCached;
     }
 
     private void loadMovieDbConfig() {
@@ -86,7 +86,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 Log.d(TAG, "onComplete: finished loading configuration file");
-                checkGenresCache();
+                loadGenres();
             }
         });
     }
@@ -106,17 +106,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onComplete() {
                 Log.d(TAG, "onComplete: finished loading genres");
-                checkBeforeLaunch();
+                launchMainActivity();
             }
         });
-    }
-
-    private void checkBeforeLaunch() {
-        if (isGenresCached && isMovieDbConfigCached) {
-            launchDelayedMainActivity();
-        }else {
-            launchMainActivity();
-        }
     }
 
     private void launchMainActivity() {
@@ -124,13 +116,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         finish();
     }
 
-    private void launchDelayedMainActivity() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                launchMainActivity();
-            }
-        },500);
+    @Override
+    void onRetryConnection() {
+        loadFirstData();
     }
 }
