@@ -170,6 +170,5 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
     @Override
     public void onMoviesLoaded(List<Movie> movieList) {
         mAdapter.setMovieList(movieList);
-        Log.d(TAG, "onMoviesLoaded: " + mAdapter.getMovieList().size());
     }
 }

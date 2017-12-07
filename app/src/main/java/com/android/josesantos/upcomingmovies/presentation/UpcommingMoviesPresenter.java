@@ -51,6 +51,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     @Override
     public void onPause() {
+        view.hideLoading();
         view = null;
     }
 
