@@ -18,6 +18,7 @@ import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.presentation.adapter.MovieDetailsActivity;
 import com.android.josesantos.upcomingmovies.presentation.adapter.OnMovieClickListener;
 import com.android.josesantos.upcomingmovies.presentation.adapter.UpcommingMoviesAdapter;
+import com.android.josesantos.upcomingmovies.presentation.custom.BaseFragment;
 import com.android.josesantos.upcomingmovies.presentation.custom.EndlessRecyclerViewScrollListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by Jose Santos on 27/10/2016.
  */
 
-public class UpcommingMoviesFragment extends Fragment implements UpcommingMoviesContract.View {
+public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMoviesContract.View {
     private static final String TAG = "UpcommingMoviesFragment";
 
     private UpcommingMoviesAdapter mAdapter;
@@ -202,5 +203,10 @@ public class UpcommingMoviesFragment extends Fragment implements UpcommingMovies
         mAdapter.getMovieList().clear();
         mAdapter.setMovieList(movieList);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void retryConnection() {
+        presenter.loadUpcommingMovies();
     }
 }

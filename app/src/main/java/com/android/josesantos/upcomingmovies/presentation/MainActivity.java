@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
+import com.android.josesantos.upcomingmovies.presentation.custom.BaseFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
     public static String CURRENT_TAG = TAG_UPCOMMING;
 
     private Handler mHandler;
+    private BaseFragment currentFragment;
 
     @BindView(R.id.bottom_bar)
     BottomBar bottomBar;
@@ -61,7 +63,7 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
         setUpBottomBar();
     }
 
-    public void setUpBottomBar(){
+    public void setUpBottomBar() {
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
     }
@@ -98,6 +100,7 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
             case 0:
                 // ic_nav_home
                 UpcommingMoviesFragment homeFragment = new UpcommingMoviesFragment();
+                currentFragment = homeFragment;
                 return homeFragment;
             case 1:
                 // ic_nav_procurar
@@ -130,7 +133,7 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
     public void onTabSelected(int tabId) {
         switch (tabId) {
             case R.id.tab_upcomming:
-                if (navItemIndex != 0){
+                if (navItemIndex != 0) {
                     navItemIndex = 0;
                     CURRENT_TAG = TAG_UPCOMMING;
                     //invalidateOptionsMenu();
@@ -138,7 +141,7 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
                 }
                 break;
             case R.id.tab_movies:
-                if (navItemIndex != 1){
+                if (navItemIndex != 1) {
                     navItemIndex = 1;
                     CURRENT_TAG = TAG_MOVIES;
                     loadHomeFragment();
@@ -151,6 +154,6 @@ public class MainActivity extends BaseActivity implements OnTabReselectListener,
 
     @Override
     void onRetryConnection() {
-
+        currentFragment.retryConnection();
     }
 }
