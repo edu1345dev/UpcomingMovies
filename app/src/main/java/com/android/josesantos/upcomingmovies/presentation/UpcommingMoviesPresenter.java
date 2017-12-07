@@ -4,13 +4,15 @@ import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
 import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
+import com.android.josesantos.upcomingmovies.model.usecase.ReloadUpcommingMovieList;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -27,32 +29,33 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     LoadUpcommingMovieList loadUpcommingMovieList;
     GetGenres getGenres;
     GetMovieDbConfiguration getMovieDbConfiguration;
-
+    ReloadUpcommingMovieList reloadUpcommingMovieList;
 
     @Inject
     public UpcommingMoviesPresenter(LoadUpcommingMovieList loadUpcommingMovieList,
                                     GetGenres getGenres,
-                                    GetMovieDbConfiguration getMovieDbConfiguration) {
+                                    GetMovieDbConfiguration getMovieDbConfiguration,
+                                    ReloadUpcommingMovieList reloadUpcommingMovieList) {
 
         this.loadUpcommingMovieList = loadUpcommingMovieList;
         this.getGenres = getGenres;
         this.getMovieDbConfiguration = getMovieDbConfiguration;
+        this.reloadUpcommingMovieList = reloadUpcommingMovieList;
     }
 
 
     @Override
     public void onResume(UpcommingMoviesContract.View view) {
         this.view = view;
-        loadProperties();
-    }
-
-    private void loadProperties() {
-        loadUpcommingMovieList.execute(new UserListObserver());
     }
 
     @Override
     public void onPause() {
         view = null;
+    }
+
+    @Override
+    public void onDestroy() {
         loadUpcommingMovieList.dispose();
     }
 
@@ -67,7 +70,12 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     }
 
     @Override
-    public List<Genres.Genre> getGenresList() {
+    public void reloadUpcommingMovies() {
+        reloadUpcommingMovieList.execute(new UserListObserver());
+    }
+
+    @Override
+    public Genres getGenres() {
         return getGenres.execute();
     }
 
@@ -76,10 +84,17 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         return getMovieDbConfiguration.execute();
     }
 
-    private final class UserListObserver extends DisposableObserver<PageResponse<UpcommingMovie>> {
+    @Override
+    public MovieWrapper getMovieWrapper() {
+        Genres genres = getGenres();
+        MovieDbConfiguration config = getMovieDbConfig();
+        return new MovieWrapper(new ArrayList<>(), genres, config);
+    }
+
+    private final class UserListObserver extends DisposableObserver<PageResponse<Movie>> {
 
         @Override
-        public void onNext(PageResponse<UpcommingMovie> value) {
+        public void onNext(PageResponse<Movie> value) {
             Log.d(TAG, "onNext: ");
             if (hasViewAttached()){
                 view.onMoviesLoaded(value.getResults());
@@ -88,7 +103,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
         @Override
         public void onError(Throwable e) {
-            Log.d(TAG, "onError: ");
+            Log.d(TAG, "onError: "+e);
             if (hasViewAttached()){
                 view.hideLoading();
             }

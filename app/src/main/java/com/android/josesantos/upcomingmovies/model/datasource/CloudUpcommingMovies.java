@@ -1,12 +1,10 @@
 package com.android.josesantos.upcomingmovies.model.datasource;
 
-import android.util.Log;
-
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.UpcommingMoviesService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.local.DataStoreImpl;
 
 import java.util.List;
@@ -14,9 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -25,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     private static final String TAG = "CloudUpcommingMovies";
 
-    private PageResponse<UpcommingMovie> pageResponse = new PageResponse<>();
+    private PageResponse<Movie> pageResponse = new PageResponse<>();
 
     @Inject
     UpcommingMoviesService moviesService;
@@ -38,10 +33,17 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     @Override
-    public Observable<PageResponse<UpcommingMovie>> loadUpcommingMovies() {
+    public Observable<PageResponse<Movie>> loadUpcommingMovies() {
         return moviesService.getUpcommingMoviesList(pageResponse.getPage().toString())
                 .doOnNext(this::setPageResponse);
 
+    }
+
+    @Override
+    public Observable<PageResponse<Movie>> reloadUpcommingMovies() {
+        pageResponse.setPage(1);
+        return moviesService.getUpcommingMoviesList(pageResponse.getPage().toString())
+                .doOnNext(this::setPageResponse);
     }
 
     @Override
@@ -66,15 +68,15 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     @Override
-    public List<Genres.Genre> getGenres() {
-        return dataStore.getGenres().getGenresList();
+    public Genres getGenres() {
+        return dataStore.getGenres();
     }
 
     private void cacheGenres(Genres genres) {
         dataStore.cacheGenres(genres);
     }
 
-    private void setPageResponse(PageResponse<UpcommingMovie> response) {
+    private void setPageResponse(PageResponse<Movie> response) {
         pageResponse.setPage(response.getPage() + 1);
         pageResponse.getResults().addAll(response.getResults());
         pageResponse.setTotalPages(response.getTotalPages());
@@ -82,7 +84,7 @@ public class CloudUpcommingMovies implements UpcommingMoviesDataSource {
     }
 
     @Override
-    public List<UpcommingMovie> getUpcommingMoviesData() {
+    public List<Movie> getUpcommingMoviesData() {
         return pageResponse.getResults();
     }
 }

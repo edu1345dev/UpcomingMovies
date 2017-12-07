@@ -1,11 +1,7 @@
 package com.android.josesantos.upcomingmovies.model.usecase;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
-import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
-import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepo;
 import com.android.josesantos.upcomingmovies.model.repository.UpcommingMoviesRepoImpl;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -21,7 +17,7 @@ public class GetGenres {
     public GetGenres() {
     }
 
-    public List<Genres.Genre> execute(){
+    public Genres execute(){
         return upcommingMoviesRepo.getGenres();
     }
 }

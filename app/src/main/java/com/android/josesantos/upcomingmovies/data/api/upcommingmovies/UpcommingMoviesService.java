@@ -9,17 +9,16 @@ import com.android.josesantos.upcomingmovies.data.api.ApiService;
 import com.android.josesantos.upcomingmovies.data.api.constants.LanguageConstants;
 import com.android.josesantos.upcomingmovies.data.api.exception.NetworkConnectionException;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by josesantos on 03/12/17.
@@ -36,24 +35,24 @@ public class UpcommingMoviesService extends ApiService {
         this.context = context;
     }
 
-    public Observable<PageResponse<UpcommingMovie>> getUpcommingMoviesList(String page){
-        return Observable.create(e -> {
-            if (isThereInternetConnection()){
-                try {
-                    e.onNext(createService(UpcommingMoviesRoutes.class)
-                            .getUpcommingMoviesList(page,LanguageConstants.EN_US).blockingFirst());
-                    e.onComplete();
-                }catch (Exception e1){
-                    e.onError(new NetworkConnectionException(e1.getCause()));
-                }
-            }else {
-                e.onError(new NetworkConnectionException());
-            }
-        });
+//    public Observable<PageResponse<Movie>> getMoviesList(String page){
+//        return createService(UpcommingMoviesRoutes.class).getMoviesList(page, LanguageConstants.EN_US);
+//    }
+
+    public Observable<PageResponse<Movie>> getUpcommingMoviesList(String page){
+        return createService(UpcommingMoviesRoutes.class)
+                .getMoviesList(page,
+                        LanguageConstants.EN_US,
+                        "primary_release_date.asc",
+                        getCurrentDate());
+    }
+
+    private String getCurrentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     }
 
     public Observable<Genres> getGenres(){
-        Log.d(TAG, "getGenresList: ");
+        Log.d(TAG, "getGenres: ");
         return Observable.create(e -> {
             if (isThereInternetConnection()){
                 try {

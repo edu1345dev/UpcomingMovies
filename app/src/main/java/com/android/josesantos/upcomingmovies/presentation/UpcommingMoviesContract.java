@@ -2,7 +2,8 @@ package com.android.josesantos.upcomingmovies.presentation;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
 import com.android.josesantos.upcomingmovies.data.entities.MovieDbConfiguration;
-import com.android.josesantos.upcomingmovies.data.entities.UpcommingMovie;
+import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class UpcommingMoviesContract {
     public interface View extends LoadView{
-        void onMoviesLoaded(List<UpcommingMovie> upcommingMovieList);
+        void onMoviesLoaded(List<Movie> movieList);
     }
 
     public interface Presenter{
@@ -20,10 +21,16 @@ public class UpcommingMoviesContract {
 
         void onPause();
 
+        void onDestroy();
+
         void loadUpcommingMovies();
 
-        List<Genres.Genre> getGenresList();
+        void reloadUpcommingMovies();
+
+        Genres getGenres();
 
         MovieDbConfiguration getMovieDbConfig();
+
+        MovieWrapper getMovieWrapper();
     }
 }

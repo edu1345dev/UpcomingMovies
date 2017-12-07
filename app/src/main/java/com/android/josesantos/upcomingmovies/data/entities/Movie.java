@@ -9,7 +9,7 @@ import java.util.List;
  * Created by josesantos on 03/12/17.
  */
 
-public class UpcommingMovie {
+public class Movie {
 
     @SerializedName("vote_count")
     @Expose
