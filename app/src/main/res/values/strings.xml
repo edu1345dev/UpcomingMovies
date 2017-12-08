@@ -8,4 +8,6 @@
     <string name="label_genres">Genres</string>
     <string name="label_release_date">Release Date</string>
     <string name="label_overview">Overview</string>
+    <string name="hint_search">Search Movie</string>
+    <string name="no_results_found">No results found for\n\n%s</string>
 </resources>

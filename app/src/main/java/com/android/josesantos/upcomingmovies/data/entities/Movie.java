@@ -172,7 +172,7 @@ public class Movie {
         }
 
         return movieConfiguration.getImages().getBaseUrl()
-                + movieConfiguration.getImages().getBackdropSizes().get(movieConfiguration.getImages().getBackdropSizes().size()-1)
+                + movieConfiguration.getImages().getBackdropSizes().get(movieConfiguration.getImages().getBackdropSizes().size()-2)
                 + getBackdropPath();
     }
 
@@ -182,7 +182,7 @@ public class Movie {
         }
 
         return movieConfiguration.getImages().getBaseUrl()
-                + movieConfiguration.getImages().getPosterSizes().get(movieConfiguration.getImages().getPosterSizes().size()-1)
+                + movieConfiguration.getImages().getPosterSizes().get(movieConfiguration.getImages().getPosterSizes().size()-2)
                 + getPosterPath();
     }
 }

@@ -41,7 +41,6 @@ public class CloudMoviesDataSource implements MoviesDataSource {
 
     @Override
     public Observable<PageResponse<Movie>> loadSearchMovies(String query) {
-        pageResponse.setPage(1);
         return moviesService.searchMovie(pageResponse.getPage().toString(), query)
                 .doOnNext(this::setPageResponse);
 
@@ -57,7 +56,7 @@ public class CloudMoviesDataSource implements MoviesDataSource {
     @Override
     public Observable<PageResponse<Movie>> reloadSearchMovies(String query) {
         pageResponse.setPage(1);
-        return moviesService.getUpcommingMoviesList(pageResponse.getPage().toString())
+        return moviesService.searchMovie(pageResponse.getPage().toString(), query)
                 .doOnNext(this::setPageResponse);
     }
 

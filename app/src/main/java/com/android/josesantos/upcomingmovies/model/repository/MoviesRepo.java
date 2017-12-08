@@ -7,6 +7,7 @@ import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 /**
@@ -25,4 +26,6 @@ public interface MoviesRepo {
     MovieConfiguration getMovieDbConfiguration();
 
     Observable<PageResponse<Movie>> reloadUpcommingMovies();
+
+    Observable<PageResponse<Movie>> reloadSearchMovies(String query);
 }

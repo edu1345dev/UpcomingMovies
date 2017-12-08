@@ -35,6 +35,8 @@ public class UpcommingMoviesContract {
 
         void reloadUpcommingMovies();
 
+        void reloadSearchMovies(String query);
+
         Genres getGenres();
 
         MovieConfiguration getMovieDbConfig();

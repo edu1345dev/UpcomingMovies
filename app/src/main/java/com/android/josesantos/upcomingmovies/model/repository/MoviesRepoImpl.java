@@ -52,6 +52,11 @@ public class MoviesRepoImpl implements MoviesRepo {
     }
 
     @Override
+    public Observable<PageResponse<Movie>> reloadSearchMovies(String query) {
+        return cloudUpcommingMovies.reloadSearchMovies(query);
+    }
+
+    @Override
     public Observable<PageResponse<Movie>> reloadUpcommingMovies() {
         return cloudUpcommingMovies.reloadUpcommingMovies();
     }

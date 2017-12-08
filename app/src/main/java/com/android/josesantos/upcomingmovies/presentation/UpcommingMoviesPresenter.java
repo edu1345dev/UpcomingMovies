@@ -11,6 +11,7 @@ import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
 import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadSearchMovieList;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
+import com.android.josesantos.upcomingmovies.model.usecase.ReloadSearchMovieList;
 import com.android.josesantos.upcomingmovies.model.usecase.ReloadUpcommingMovieList;
 
 import java.net.ConnectException;
@@ -28,6 +29,7 @@ import io.reactivex.observers.DisposableObserver;
 public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Presenter {
     private static final String TAG = "UpcommingMoviesPresente";
 
+    ReloadSearchMovieList reloadSearchMovies;
     UpcommingMoviesContract.View view;
     LoadUpcommingMovieList loadUpcommingMovieList;
     LoadSearchMovieList loadSearchMovieList;
@@ -40,13 +42,15 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
                                     LoadSearchMovieList loadSearchMovieList,
                                     GetGenres getGenres,
                                     GetMovieDbConfiguration getMovieDbConfiguration,
-                                    ReloadUpcommingMovieList reloadUpcommingMovieList) {
+                                    ReloadUpcommingMovieList reloadUpcommingMovieList,
+                                    ReloadSearchMovieList reloadSearchMovieList) {
 
         this.loadUpcommingMovieList = loadUpcommingMovieList;
         this.getGenres = getGenres;
         this.getMovieDbConfiguration = getMovieDbConfiguration;
         this.reloadUpcommingMovieList = reloadUpcommingMovieList;
         this.loadSearchMovieList = loadSearchMovieList;
+        this.reloadSearchMovies = reloadSearchMovieList;
     }
 
 
@@ -87,7 +91,18 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
     }
 
     @Override
+    public void reloadSearchMovies(String query) {
+        if (hasViewAttached()) {
+            view.showLoading();
+            reloadSearchMovies.execute(new UserListObserver(), query);
+        }
+    }
+
+    @Override
     public void reloadUpcommingMovies() {
+        if (hasViewAttached()){
+            view.showLoading();
+        }
         reloadUpcommingMovieList.execute(new UserListObserver());
     }
 

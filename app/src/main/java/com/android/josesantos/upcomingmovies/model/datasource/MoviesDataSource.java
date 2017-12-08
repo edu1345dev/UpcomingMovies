@@ -15,12 +15,20 @@ import io.reactivex.Observable;
 
 public interface MoviesDataSource {
     Observable<PageResponse<Movie>> loadUpcommingMovies();
+
     Observable<PageResponse<Movie>> loadSearchMovies(String query);
+
     Observable<PageResponse<Movie>> reloadUpcommingMovies();
+
     Observable<PageResponse<Movie>> reloadSearchMovies(String query);
+
     Observable<Genres> loadGenres();
+
     Observable<MovieConfiguration> loadMovieDbConfigurations();
+
     Genres getGenres();
+
     MovieConfiguration getMovieDbConfiguration();
+
     List<Movie> getUpcommingMoviesData();
 }

@@ -7,11 +7,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
@@ -49,7 +50,13 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     RecyclerView mRecycler;
 
     @BindView(R.id.search_view)
-    SearchView search;
+    SearchView searchView;
+
+    @BindView(R.id.not_found_container)
+    LinearLayout notFoundContainer;
+
+    @BindView(R.id.tv_not_found_container)
+    TextView tvNotFound;
 
     @Inject
     UpcommingMoviesPresenter presenter;
@@ -84,7 +91,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
         configureSearchView();
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             handleOnSavedInstance(savedInstanceState);
         }
 
@@ -95,7 +102,8 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         Gson gson = new Gson();
         String moviesList = savedInstanceState.getString(MOVIE_LIST);
 
-        Type listType = new TypeToken<ArrayList<Movie>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Movie>>() {
+        }.getType();
         mAdapter.setMovieList(gson.fromJson(moviesList, listType));
 
     }
@@ -110,8 +118,13 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.d(TAG, "onLoadMore: ");
-                presenter.loadUpcommingMovies();
+                String search = searchView.getQuery().toString();
+
+                if (!search.equals("")){
+                    presenter.searchMovies(search);
+                }else {
+                    presenter.loadUpcommingMovies();
+                }
             }
         };
 
@@ -124,45 +137,47 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
     public void configureSwipeRefresh() {
         swipeRefresh.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorAccent);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                onUserRefreshesList();
-                endlessRecyclerViewScrollListener.resetState();
-            }
+        swipeRefresh.setOnRefreshListener(() -> {
+            onUserRefreshesList();
+            endlessRecyclerViewScrollListener.resetState();
         });
     }
 
-    public void configureSearchView(){
+    public void configureSearchView() {
 
-        search.setQueryHint("Search Movie");
-        search.setIconifiedByDefault(false);
-        search.clearFocus();
+        searchView.setQueryHint(getString(R.string.hint_search));
+        searchView.setIconifiedByDefault(false);
+        searchView.clearFocus();
 
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                presenter.searchMovies(query);
-                search.clearFocus();
+                presenter.reloadSearchMovies(query);
+                searchView.clearFocus();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //faz nada
+                //do nothing
                 return false;
             }
         });
 
-        final ImageView close = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        final ImageView close = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
         close.setOnClickListener(view -> {
-            search.setQuery("", false);
-            search.clearFocus();
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+            presenter.reloadUpcommingMovies();
         });
 
     }
 
     private void onUserRefreshesList() {
+        if (!searchView.getQuery().equals("")) {
+            searchView.setQuery("", false);
+        }
+
         presenter.reloadUpcommingMovies();
     }
 
@@ -211,7 +226,9 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
     @Override
     public void showLoading() {
-        swipeRefresh.setRefreshing(true);
+        if (!swipeRefresh.isRefreshing()){
+            swipeRefresh.setRefreshing(true);
+        }
     }
 
     @Override
@@ -226,23 +243,39 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
     @Override
     public void showInternetConnectionError() {
-        if (getActivity() instanceof MainActivity){
+        if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).showConnectionError();
         }
     }
 
     @Override
     public void showUnknownError() {
-        if (getActivity() instanceof MainActivity){
+        if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).showUnkownError();
         }
     }
 
     @Override
     public void onMoviesReload(List<Movie> movieList) {
-        mAdapter.getMovieList().clear();
-        mAdapter.setMovieList(movieList);
-        mAdapter.notifyDataSetChanged();
+        if (movieList.isEmpty()){
+            showEmptyContainer();
+        }else {
+            hideNotFoundContainer();
+            mAdapter.getMovieList().clear();
+            mAdapter.setMovieList(movieList);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void showEmptyContainer() {
+        mRecycler.setVisibility(View.GONE);
+        notFoundContainer.setVisibility(View.VISIBLE);
+        tvNotFound.setText(getString(R.string.no_results_found, searchView.getQuery().toString()));
+    }
+
+    private void hideNotFoundContainer(){
+        mRecycler.setVisibility(View.VISIBLE);
+        notFoundContainer.setVisibility(View.GONE);
     }
 
     @Override
