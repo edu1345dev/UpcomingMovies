@@ -32,6 +32,11 @@ public class MoviesRepoImpl implements MoviesRepo {
     }
 
     @Override
+    public Observable<PageResponse<Movie>> loadSearchMovies(String query) {
+        return cloudUpcommingMovies.loadSearchMovies(query);
+    }
+
+    @Override
     public Observable<Genres> loadGenres() {
         return cloudUpcommingMovies.loadGenres();
     }

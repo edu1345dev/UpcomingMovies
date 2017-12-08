@@ -15,15 +15,16 @@ import retrofit2.http.Query;
 
 public interface MoviesDbRoutes {
 
-//    @GET("movie/upcoming")
-//    Observable<PageResponse<Movie>> getMoviesList(@Query("page") String page,
-//                                                                    @Query("language") String language);
-
     @GET("discover/movie")
     Observable<PageResponse<Movie>> getMoviesList(@Query("page") String page,
                                                   @Query("language") String language,
                                                   @Query("sort_by") String sortBy,
                                                   @Query("primary_release_date.gte") String releaseDateMin);
+
+    @GET("search/movie")
+    Observable<PageResponse<Movie>> getSearchMoviesList(@Query("page") String page,
+                                                        @Query("query") String query,
+                                                        @Query("language") String language);
 
     @GET("genre/movie/list")
     Observable<Genres> getGenres(@Query("language") String language);

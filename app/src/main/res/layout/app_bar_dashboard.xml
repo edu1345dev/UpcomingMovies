@@ -8,14 +8,4 @@
 
     <include layout="@layout/content_dashboard" />
 
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom"
-        android:orientation="horizontal"
-        app:bb_inActiveTabColor="@color/dark_gray"
-        app:bb_activeTabColor="@color/bb_ic_active"
-        app:bb_tabXmlResource="@xml/dashboard_bottom_tabs"/>
-
 </android.support.design.widget.CoordinatorLayout>

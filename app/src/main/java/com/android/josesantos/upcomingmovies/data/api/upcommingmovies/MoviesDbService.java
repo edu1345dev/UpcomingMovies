@@ -41,6 +41,12 @@ public class MoviesDbService extends ApiService {
                         getCurrentDate());
     }
 
+    public Observable<PageResponse<Movie>> searchMovie(String page, String query){
+        return getService().getSearchMoviesList(page,
+                query,
+                LanguageConstants.EN_US);
+    }
+
     private MoviesDbRoutes getService() {
         return createService(MoviesDbRoutes.class);
     }

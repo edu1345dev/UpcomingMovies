@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,6 +18,14 @@ import android.util.Log;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!isThereInternetConnection()){
+            showConnectionError();
+        }
+    }
 
     public boolean isThereInternetConnection() {
         boolean isConnected;
@@ -30,10 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showConnectionError() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        dialogBuilder.setTitle("No Internet");
-
+        dialogBuilder.setMessage("Sorry, there is no internet connection!");
         dialogBuilder
-                .setPositiveButton("Connect",
+                .setPositiveButton("CONNECT",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -49,17 +58,36 @@ public abstract class BaseActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         }
-                );
-
-        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                )
+        .setNegativeButton("TRY AGAIN", new DialogInterface.OnClickListener() {
             @Override
-            public void onDismiss(DialogInterface dialogInterface) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 onRetryConnection();
+                dialogInterface.dismiss();
             }
         });
 
         dialogBuilder.create().show();
     }
+
+    public void showUnkownError() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        dialogBuilder.setMessage("Something went wrong, want to try again?");
+        dialogBuilder
+                .setPositiveButton("TRY AGAIN",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                onRetryConnection();
+                                dialog.dismiss();
+                            }
+                        }
+                );
+
+        dialogBuilder.create().show();
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

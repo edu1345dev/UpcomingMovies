@@ -3,14 +3,15 @@ package com.android.josesantos.upcomingmovies.presentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
@@ -18,7 +19,6 @@ import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.presentation.adapter.MovieDetailsActivity;
 import com.android.josesantos.upcomingmovies.presentation.adapter.OnMovieClickListener;
 import com.android.josesantos.upcomingmovies.presentation.adapter.UpcommingMoviesAdapter;
-import com.android.josesantos.upcomingmovies.presentation.custom.BaseFragment;
 import com.android.josesantos.upcomingmovies.presentation.custom.EndlessRecyclerViewScrollListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -40,12 +40,16 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     private static final String TAG = "UpcommingMoviesFragment";
 
     private UpcommingMoviesAdapter mAdapter;
+    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
     @BindView(R.id.sr_upcomming_movies)
     SwipeRefreshLayout swipeRefresh;
 
     @BindView(R.id.rv_upcomming_movies)
     RecyclerView mRecycler;
+
+    @BindView(R.id.search_view)
+    SearchView search;
 
     @Inject
     UpcommingMoviesPresenter presenter;
@@ -78,6 +82,8 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         //configura a swipe refresh view com seus listeners
         configureSwipeRefresh();
 
+        configureSearchView();
+
         if (savedInstanceState != null){
             handleOnSavedInstance(savedInstanceState);
         }
@@ -101,13 +107,15 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
         mRecycler.setLayoutManager(llm);
 
-        mRecycler.addOnScrollListener(new EndlessRecyclerViewScrollListener(llm) {
+        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.d(TAG, "onLoadMore: ");
                 presenter.loadUpcommingMovies();
             }
-        });
+        };
+
+        mRecycler.addOnScrollListener(endlessRecyclerViewScrollListener);
 
         mAdapter = new UpcommingMoviesAdapter(presenter.getMovieWrapper(), getContext());
         mAdapter.setOnMovieClickListener(onMovieClickListener);
@@ -120,24 +128,42 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
             @Override
             public void onRefresh() {
                 onUserRefreshesList();
+                endlessRecyclerViewScrollListener.resetState();
             }
         });
     }
 
-    private void onUserRefreshesList() {
-        presenter.reloadUpcommingMovies();
+    public void configureSearchView(){
+
+        search.setQueryHint("Search Movie");
+        search.setIconifiedByDefault(false);
+        search.clearFocus();
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                presenter.searchMovies(query);
+                search.clearFocus();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //faz nada
+                return false;
+            }
+        });
+
+        final ImageView close = search.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        close.setOnClickListener(view -> {
+            search.setQuery("", false);
+            search.clearFocus();
+        });
+
     }
 
-    @Override
-    public void onDestroyView() {
-        if (mRecycler != null) {
-            mRecycler.setAdapter(null);
-            mRecycler = null;
-        }
-
-        mRecycler = null;
-
-        super.onDestroyView();
+    private void onUserRefreshesList() {
+        presenter.reloadUpcommingMovies();
     }
 
     @Override
@@ -199,6 +225,20 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     }
 
     @Override
+    public void showInternetConnectionError() {
+        if (getActivity() instanceof MainActivity){
+            ((MainActivity) getActivity()).showConnectionError();
+        }
+    }
+
+    @Override
+    public void showUnknownError() {
+        if (getActivity() instanceof MainActivity){
+            ((MainActivity) getActivity()).showUnkownError();
+        }
+    }
+
+    @Override
     public void onMoviesReload(List<Movie> movieList) {
         mAdapter.getMovieList().clear();
         mAdapter.setMovieList(movieList);
@@ -207,6 +247,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
 
     @Override
     public void retryConnection() {
-        presenter.loadUpcommingMovies();
+        presenter.reloadUpcommingMovies();
+        endlessRecyclerViewScrollListener.resetState();
     }
 }

@@ -9,9 +9,12 @@ import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
 import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
+import com.android.josesantos.upcomingmovies.model.usecase.LoadSearchMovieList;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
 import com.android.josesantos.upcomingmovies.model.usecase.ReloadUpcommingMovieList;
 
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -27,12 +30,14 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     UpcommingMoviesContract.View view;
     LoadUpcommingMovieList loadUpcommingMovieList;
+    LoadSearchMovieList loadSearchMovieList;
     GetGenres getGenres;
     GetMovieDbConfiguration getMovieDbConfiguration;
     ReloadUpcommingMovieList reloadUpcommingMovieList;
 
     @Inject
     public UpcommingMoviesPresenter(LoadUpcommingMovieList loadUpcommingMovieList,
+                                    LoadSearchMovieList loadSearchMovieList,
                                     GetGenres getGenres,
                                     GetMovieDbConfiguration getMovieDbConfiguration,
                                     ReloadUpcommingMovieList reloadUpcommingMovieList) {
@@ -41,6 +46,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         this.getGenres = getGenres;
         this.getMovieDbConfiguration = getMovieDbConfiguration;
         this.reloadUpcommingMovieList = reloadUpcommingMovieList;
+        this.loadSearchMovieList = loadSearchMovieList;
     }
 
 
@@ -69,6 +75,14 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         if (hasViewAttached()) {
             view.showLoading();
             loadUpcommingMovieList.execute(new UserListObserver());
+        }
+    }
+
+    @Override
+    public void searchMovies(String query) {
+        if (hasViewAttached()) {
+            view.showLoading();
+            loadSearchMovieList.execute(new UserListObserver(), query);
         }
     }
 
@@ -111,9 +125,18 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, "onError: "+e);
-            if (hasViewAttached()){
-                view.hideLoading();
+            if (e instanceof ConnectException || e instanceof UnknownHostException){
+                if (hasViewAttached()){
+                    view.hideLoading();
+                    view.showInternetConnectionError();
+                }
+            }else {
+                if (hasViewAttached()){
+                    view.hideLoading();
+                    view.showUnknownError();
+                }
             }
+
         }
 
         @Override

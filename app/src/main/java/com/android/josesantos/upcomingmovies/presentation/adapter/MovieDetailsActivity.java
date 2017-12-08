@@ -16,9 +16,12 @@ import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
 import com.android.josesantos.upcomingmovies.presentation.MainActivity;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesFragment;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 
@@ -37,6 +40,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvGenres;
     @BindView(R.id.tv_details_overview)
     TextView tvOverview;
+    @BindView(R.id.iv_backgroud)
+    ImageView ivBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void initViews(MovieWrapper movieWrapper) {
+        RequestOptions requestOptions = new RequestOptions()
+                .priority(Priority.HIGH)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .centerCrop();
+
+        if (movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()) !=null){
+            Glide.with(this)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
+                    .into(ivBackground);
+        }
+
         Glide.with(this)
                 .load(movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
                 .into(ivPoster);

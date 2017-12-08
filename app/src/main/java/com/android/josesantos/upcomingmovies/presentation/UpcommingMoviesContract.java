@@ -12,12 +12,17 @@ import java.util.List;
  */
 
 public class UpcommingMoviesContract {
-    public interface View extends LoadView{
+    public interface View extends LoadView {
         void onMoviesLoaded(List<Movie> movieList);
+
         void onMoviesReload(List<Movie> movieList);
+
+        void showInternetConnectionError();
+
+        void showUnknownError();
     }
 
-    public interface Presenter{
+    public interface Presenter {
         void onResume(UpcommingMoviesContract.View view);
 
         void onPause();
@@ -25,6 +30,8 @@ public class UpcommingMoviesContract {
         void onDestroy();
 
         void loadUpcommingMovies();
+
+        void searchMovies(String query);
 
         void reloadUpcommingMovies();
 

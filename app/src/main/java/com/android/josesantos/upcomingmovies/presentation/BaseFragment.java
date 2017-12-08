@@ -1,4 +1,4 @@
-package com.android.josesantos.upcomingmovies.presentation.custom;
+package com.android.josesantos.upcomingmovies.presentation;
 
 import android.support.v4.app.Fragment;
 
