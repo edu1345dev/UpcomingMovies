@@ -14,7 +14,8 @@ public class GetGenres {
     public MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public GetGenres() {
+    GetGenres() {
+        //used by dagger
     }
 
     public Genres execute(){

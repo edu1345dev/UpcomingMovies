@@ -14,10 +14,11 @@ import javax.inject.Inject;
 public class GetUpcommingMoviesList {
 
     @Inject
-    public MoviesRepo moviesRepo;
+    MoviesRepo moviesRepo;
 
     @Inject
-    public GetUpcommingMoviesList() {
+    GetUpcommingMoviesList() {
+        //used by dagger
     }
 
     public List<Movie> execute(){

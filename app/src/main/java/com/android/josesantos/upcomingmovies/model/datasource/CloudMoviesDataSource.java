@@ -2,9 +2,9 @@ package com.android.josesantos.upcomingmovies.model.datasource;
 
 import com.android.josesantos.upcomingmovies.data.api.upcommingmovies.MoviesDbService;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.local.DataStoreImpl;
 
 import java.util.List;
@@ -18,7 +18,6 @@ import io.reactivex.Observable;
  */
 
 public class CloudMoviesDataSource implements MoviesDataSource {
-    private static final String TAG = "CloudMoviesDataSource";
 
     private PageResponse<Movie> pageResponse = new PageResponse<>();
 
@@ -29,7 +28,8 @@ public class CloudMoviesDataSource implements MoviesDataSource {
 
 
     @Inject
-    public CloudMoviesDataSource() {
+    CloudMoviesDataSource() {
+        //used by dagger
     }
 
     @Override

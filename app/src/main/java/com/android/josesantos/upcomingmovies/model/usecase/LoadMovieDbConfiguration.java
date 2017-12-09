@@ -19,7 +19,8 @@ public class LoadMovieDbConfiguration extends BaseUseCase<MovieConfiguration>{
     MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public LoadMovieDbConfiguration() {
+    LoadMovieDbConfiguration() {
+        //used by dagger
     }
 
     public void execute(DisposableObserver<MovieConfiguration> disposableObserver){

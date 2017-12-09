@@ -12,7 +12,7 @@ public class BaseUseCase<T> {
 
     private final CompositeDisposable disposables;
 
-    public BaseUseCase() {
+    BaseUseCase() {
         this.disposables = new CompositeDisposable();
     }
 

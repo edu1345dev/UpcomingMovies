@@ -1,8 +1,8 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,10 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.observers.DisposableObserver;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
+
 public class SplashScreenActivity extends BaseActivity {
     private static final String TAG = "SplashScreenActivity";
 
@@ -60,13 +57,20 @@ public class SplashScreenActivity extends BaseActivity {
         loadFirstData();
     }
 
+    @Override
+    protected void onDestroy() {
+        loadMovieDbConfiguration.dispose();
+        loadGenres.dispose();
+        super.onDestroy();
+    }
+
     private void applyAnimation() {
-        Animation zoomIn = AnimationUtils.loadAnimation(this,R.anim.zoom_in);
-        Animation zoomOut = AnimationUtils.loadAnimation(this,R.anim.zoom_out);
+        Animation zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        Animation zoomOut = AnimationUtils.loadAnimation(this, R.anim.zoom_out);
         zoomIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //do nothing
             }
 
             @Override
@@ -76,14 +80,14 @@ public class SplashScreenActivity extends BaseActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //do nothing
             }
         });
 
         zoomOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                //do nothing
             }
 
             @Override
@@ -93,7 +97,7 @@ public class SplashScreenActivity extends BaseActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                //do nothing
             }
         });
 
@@ -102,9 +106,9 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void loadFirstData() {
-        if (isConfigInfoCached()){
+        if (isConfigInfoCached()) {
             launchMainActivityDelayed();
-        }else if (isThereInternetConnection()) {
+        } else if (isThereInternetConnection()) {
             loadMovieDbConfig();
         } else {
             showConnectionError();
@@ -112,8 +116,8 @@ public class SplashScreenActivity extends BaseActivity {
     }
 
     private void launchMainActivityDelayed() {
-        Handler handler =  new Handler();
-        handler.postDelayed(this::launchMainActivity,2000);
+        Handler handler = new Handler();
+        handler.postDelayed(this::launchMainActivity, 2000);
     }
 
     private boolean isConfigInfoCached() {

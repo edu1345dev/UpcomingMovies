@@ -19,7 +19,8 @@ public class LoadGenres extends BaseUseCase<Genres>{
     MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public LoadGenres() {
+    LoadGenres() {
+        //used by dagger
     }
 
     public void execute(DisposableObserver<Genres> disposableObserver){

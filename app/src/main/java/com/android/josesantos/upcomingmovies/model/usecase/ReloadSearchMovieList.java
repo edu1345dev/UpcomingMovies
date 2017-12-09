@@ -20,7 +20,7 @@ public class ReloadSearchMovieList extends BaseUseCase<PageResponse<Movie>>{
     MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public ReloadSearchMovieList() {
+    ReloadSearchMovieList() {
     }
 
     public void execute(DisposableObserver<PageResponse<Movie>> observer, String query) {

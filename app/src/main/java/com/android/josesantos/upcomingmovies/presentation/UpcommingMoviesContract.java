@@ -1,9 +1,9 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.MovieListWrapper;
-import com.android.josesantos.upcomingmovies.data.entities.Movie;
 
 import java.util.List;
 

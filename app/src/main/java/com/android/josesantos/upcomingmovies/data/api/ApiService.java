@@ -1,7 +1,5 @@
 package com.android.josesantos.upcomingmovies.data.api;
 
-import android.content.Context;
-
 import com.android.josesantos.upcomingmovies.data.api.constants.ApiConstants;
 
 import java.io.IOException;
@@ -27,7 +25,7 @@ public class ApiService {
     private static final int TIMEOUT_SECONDS = 30;
     private static final String PARAM_API_KEY = "api_key";
 
-    public static <S> S createService(Class<S> serviceClass) {
+    protected static <S> S createService(Class<S> serviceClass) {
         OkHttpClient.Builder httpClientBuilder = getHttpClient().newBuilder();
 
         //interceptor for logging requests

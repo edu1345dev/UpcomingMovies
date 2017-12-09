@@ -101,8 +101,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         Gson gson = new Gson();
         String moviesList = savedInstanceState.getString(MOVIE_LIST);
 
-        Type listType = new TypeToken<ArrayList<Movie>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();
         mAdapter.setMovieList(gson.fromJson(moviesList, listType));
 
     }
@@ -142,8 +141,12 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         swipeRefresh.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(() -> {
             onUserRefreshesList();
-            endlessRecyclerViewScrollListener.resetState();
+            resetScrollListener();
         });
+    }
+
+    private void resetScrollListener() {
+        endlessRecyclerViewScrollListener.resetState();
     }
 
     public void configureSearchView() {
@@ -209,7 +212,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     public void onStop() {
         super.onStop();
         presenter.onStop();
-        endlessRecyclerViewScrollListener.resetState();
+        resetScrollListener();
     }
 
     @Override
@@ -244,6 +247,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     public void showInternetConnectionError() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).showConnectionError();
+            showInternetConnectionErrorContainer();
         }
     }
 
@@ -251,6 +255,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     public void showUnknownError() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).showUnkownError();
+            showInternetConnectionErrorContainer();
         }
     }
 
@@ -272,6 +277,12 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         tvNotFound.setText(getString(R.string.no_results_found, searchView.getQuery().toString()));
     }
 
+    private void showInternetConnectionErrorContainer() {
+        mRecycler.setVisibility(View.GONE);
+        notFoundContainer.setVisibility(View.VISIBLE);
+        tvNotFound.setText(R.string.pull_to_refresh);
+    }
+
     private void hideNotFoundContainer(){
         mRecycler.setVisibility(View.VISIBLE);
         notFoundContainer.setVisibility(View.GONE);
@@ -280,6 +291,6 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     @Override
     public void retryConnection() {
         presenter.reloadUpcommingMovies();
-        endlessRecyclerViewScrollListener.resetState();
+        resetScrollListener();
     }
 }

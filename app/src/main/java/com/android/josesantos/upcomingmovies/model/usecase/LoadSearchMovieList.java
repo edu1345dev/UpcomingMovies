@@ -20,7 +20,8 @@ public class LoadSearchMovieList extends BaseUseCase<PageResponse<Movie>>{
     MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public LoadSearchMovieList() {
+    LoadSearchMovieList() {
+        //used by dagger
     }
 
     public void execute(DisposableObserver<PageResponse<Movie>> observer, String query) {

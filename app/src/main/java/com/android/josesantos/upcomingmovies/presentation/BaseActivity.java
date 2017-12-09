@@ -1,7 +1,6 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,7 +9,8 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import com.android.josesantos.upcomingmovies.R;
 
 /**
  * Created by Jose Santos on 07/12/2017.
@@ -18,6 +18,7 @@ import android.util.Log;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
+    private static final int REQUEST_CODE = 201;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,31 +41,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showConnectionError() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        dialogBuilder.setMessage("Sorry, there is no internet connection!");
+        dialogBuilder.setMessage(R.string.no_internet_connection);
         dialogBuilder
-                .setPositiveButton("CONNECT",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // Attempt to enable Wifi
-                                if (!isThereInternetConnection()){
-                                    final Intent wifiIntent =
-                                            new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                    wifiIntent.addFlags(
-                                            Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                                    startActivityForResult(wifiIntent,201);
-                                }
-
-                                dialog.dismiss();
+                .setPositiveButton(R.string.action_connect,
+                        (dialog, whichButton) -> {
+                            // Attempt to enable Wifi
+                            if (!isThereInternetConnection()){
+                                final Intent wifiIntent =
+                                        new Intent(Settings.ACTION_WIFI_SETTINGS);
+                                wifiIntent.addFlags(
+                                        Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                                startActivityForResult(wifiIntent,REQUEST_CODE);
                             }
+
+                            dialog.dismiss();
                         }
                 )
-        .setNegativeButton("TRY AGAIN", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                onRetryConnection();
-                dialogInterface.dismiss();
-            }
+        .setNegativeButton(R.string.action_try_again, (dialogInterface, i) -> {
+            onRetryConnection();
+            dialogInterface.dismiss();
         });
 
         dialogBuilder.create().show();
@@ -73,15 +68,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void showUnkownError() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
-        dialogBuilder.setMessage("Something went wrong, want to try again?");
+        dialogBuilder.setMessage(R.string.unknown_error);
         dialogBuilder
-                .setPositiveButton("TRY AGAIN",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                onRetryConnection();
-                                dialog.dismiss();
-                            }
+                .setPositiveButton(R.string.action_try_again,
+                        (dialog, whichButton) -> {
+                            onRetryConnection();
+                            dialog.dismiss();
                         }
                 );
 
@@ -91,8 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult: "+requestCode+" resultCode "+resultCode);
-        if (requestCode == 201){
+        if (requestCode == REQUEST_CODE){
            onRetryConnection();
         }
         super.onActivityResult(requestCode, resultCode, data);

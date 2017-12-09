@@ -1,8 +1,9 @@
 package com.android.josesantos.upcomingmovies.data.entities;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 /**
  * Created by josesantos on 05/12/17.

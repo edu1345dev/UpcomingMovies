@@ -18,7 +18,7 @@ public class ApiServiceModule {
 
     @Provides
     @Singleton
-    MoviesDbService provideUpcommingMoviesService(Context context){
-        return new MoviesDbService(context);
+    MoviesDbService provideUpcommingMoviesService(){
+        return new MoviesDbService();
     }
 }

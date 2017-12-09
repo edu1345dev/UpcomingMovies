@@ -1,18 +1,13 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
-import com.roughike.bottombar.OnTabSelectListener;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -47,20 +42,9 @@ public class MainActivity extends BaseActivity{
     }
 
     private Fragment getHomeFragment() {
-
         UpcommingMoviesFragment homeFragment = new UpcommingMoviesFragment();
         currentFragment = homeFragment;
         return currentFragment;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override

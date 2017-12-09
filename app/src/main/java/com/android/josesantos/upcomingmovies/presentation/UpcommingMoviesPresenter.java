@@ -3,10 +3,10 @@ package com.android.josesantos.upcomingmovies.presentation;
 import android.util.Log;
 
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieConfiguration;
 import com.android.josesantos.upcomingmovies.data.entities.MovieListWrapper;
 import com.android.josesantos.upcomingmovies.data.entities.PageResponse;
-import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
 import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
 import com.android.josesantos.upcomingmovies.model.usecase.LoadSearchMovieList;
@@ -29,13 +29,13 @@ import io.reactivex.observers.DisposableObserver;
 public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Presenter {
     private static final String TAG = "UpcommingMoviesPresente";
 
-    ReloadSearchMovieList reloadSearchMovies;
-    UpcommingMoviesContract.View view;
-    LoadUpcommingMovieList loadUpcommingMovieList;
-    LoadSearchMovieList loadSearchMovieList;
-    GetGenres getGenres;
-    GetMovieDbConfiguration getMovieDbConfiguration;
-    ReloadUpcommingMovieList reloadUpcommingMovieList;
+    private ReloadSearchMovieList reloadSearchMovies;
+    private UpcommingMoviesContract.View view;
+    private LoadUpcommingMovieList loadUpcommingMovieList;
+    private LoadSearchMovieList loadSearchMovieList;
+    private GetGenres getGenres;
+    private GetMovieDbConfiguration getMovieDbConfiguration;
+    private ReloadUpcommingMovieList reloadUpcommingMovieList;
 
     @Inject
     public UpcommingMoviesPresenter(LoadUpcommingMovieList loadUpcommingMovieList,
@@ -67,10 +67,13 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     @Override
     public void onDestroy() {
-        loadUpcommingMovieList.dispose();
+        this.loadUpcommingMovieList.dispose();
+        this.reloadUpcommingMovieList.dispose();
+        this.loadSearchMovieList.dispose();
+        this.reloadSearchMovies.dispose();
     }
 
-    private boolean hasViewAttached(){
+    private boolean hasViewAttached() {
         return view != null;
     }
 
@@ -100,7 +103,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
     @Override
     public void reloadUpcommingMovies() {
-        if (hasViewAttached()){
+        if (hasViewAttached()) {
             view.showLoading();
         }
         reloadUpcommingMovieList.execute(new UserListObserver());
@@ -127,11 +130,11 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
         @Override
         public void onNext(PageResponse<Movie> value) {
-            Log.d(TAG, "onNext: "+value);
-            if (hasViewAttached()){
-                if (value.getPage() == 1){
+            Log.d(TAG, "onNext: " + value);
+            if (hasViewAttached()) {
+                if (value.getPage() == 1) {
                     view.onMoviesReload(value.getResults());
-                }else {
+                } else {
                     view.onMoviesLoaded(value.getResults());
                 }
             }
@@ -139,14 +142,14 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
         @Override
         public void onError(Throwable e) {
-            Log.d(TAG, "onError: "+e);
-            if (e instanceof ConnectException || e instanceof UnknownHostException){
-                if (hasViewAttached()){
+            Log.d(TAG, "onError: " + e);
+            if (e instanceof ConnectException || e instanceof UnknownHostException) {
+                if (hasViewAttached()) {
                     view.hideLoading();
                     view.showInternetConnectionError();
                 }
-            }else {
-                if (hasViewAttached()){
+            } else {
+                if (hasViewAttached()) {
                     view.hideLoading();
                     view.showUnknownError();
                 }
@@ -157,7 +160,7 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         @Override
         public void onComplete() {
             Log.d(TAG, "onComplete: ");
-            if (hasViewAttached()){
+            if (hasViewAttached()) {
                 view.hideLoading();
             }
         }

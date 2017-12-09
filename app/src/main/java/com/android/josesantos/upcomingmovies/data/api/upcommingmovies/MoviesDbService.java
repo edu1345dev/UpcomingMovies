@@ -1,10 +1,5 @@
 package com.android.josesantos.upcomingmovies.data.api.upcommingmovies;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
 import com.android.josesantos.upcomingmovies.data.api.ApiService;
 import com.android.josesantos.upcomingmovies.data.api.constants.LanguageConstants;
 import com.android.josesantos.upcomingmovies.data.entities.Genres;
@@ -25,19 +20,18 @@ import io.reactivex.Observable;
 
 public class MoviesDbService extends ApiService {
 
-    private static final String TAG = "MoviesDbService";
-
-    private final Context context;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final String SORT_BY = "primary_release_date.asc";
 
     @Inject
-    public MoviesDbService(Context context) {
-        this.context = context;
+    public MoviesDbService() {
+        //used by dagger
     }
 
     public Observable<PageResponse<Movie>> getUpcommingMoviesList(String page){
         return getService().getMoviesList(page,
                         LanguageConstants.EN_US,
-                        "primary_release_date.asc",
+                        SORT_BY,
                         getCurrentDate());
     }
 
@@ -52,16 +46,14 @@ public class MoviesDbService extends ApiService {
     }
 
     public Observable<Genres> getGenres(){
-        Log.d(TAG, "getGenres: ");
         return getService().getGenres(LanguageConstants.EN_US);
     }
 
     public Observable<MovieConfiguration> getMovieDbConfiguration(){
-        Log.d(TAG, "getMovieConfiguration: ");
         return getService().getMovieDbConfiguration();
     }
 
     private String getCurrentDate() {
-        return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        return new SimpleDateFormat(DATE_FORMAT).format(Calendar.getInstance().getTime());
     }
 }

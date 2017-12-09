@@ -1,29 +1,17 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
-import com.android.josesantos.upcomingmovies.presentation.MainActivity;
-import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -51,7 +39,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (getIntent().hasExtra(UpcommingMoviesFragment.MOVIE)){
+        if (getIntent().hasExtra(UpcommingMoviesFragment.MOVIE)) {
             String movie = getIntent().getStringExtra(UpcommingMoviesFragment.MOVIE);
             Gson gson = new Gson();
 
@@ -68,7 +56,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .centerCrop();
 
-        if (movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()) !=null){
+        if (movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()) != null) {
             Glide.with(this)
                     .setDefaultRequestOptions(requestOptions)
                     .load(movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
@@ -79,27 +67,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .load(movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
                 .into(ivPoster);
 
-        if (movie.getTitle() != null){
+        if (movie.getTitle() != null) {
             tvName.setText(movie.getTitle());
-        }else {
+        } else {
             tvName.setText(getString(R.string.no_name_informed));
         }
 
-        if (movie.getReleaseDate() != null){
+        if (movie.getReleaseDate() != null) {
             tvRelease.setText(movie.getReleaseDate());
-        }else {
+        } else {
             tvRelease.setText(getString(R.string.no_release_date_informed));
         }
 
-        if (!movie.getGenreIds().isEmpty()){
+        if (!movie.getGenreIds().isEmpty()) {
             tvGenres.setText(movieWrapper.getGenres().getGenresText(movie.getGenreIds()));
-        }else {
+        } else {
             tvGenres.setText(getString(R.string.no_genres_informed));
         }
 
-        if (movie.getOverview() != null){
+        if (movie.getOverview() != null) {
             tvOverview.setText(movie.getOverview());
-        }else {
+        } else {
             tvOverview.setText(getString(R.string.no_overview_informed));
         }
     }

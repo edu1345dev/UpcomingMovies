@@ -14,7 +14,8 @@ public class GetMovieDbConfiguration {
     public MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public GetMovieDbConfiguration() {
+    GetMovieDbConfiguration() {
+        //used by dagger
     }
 
     public MovieConfiguration execute(){

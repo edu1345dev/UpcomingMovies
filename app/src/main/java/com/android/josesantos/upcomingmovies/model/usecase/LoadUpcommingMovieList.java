@@ -20,7 +20,8 @@ public class LoadUpcommingMovieList extends BaseUseCase<PageResponse<Movie>>{
     MoviesRepoImpl upcommingMoviesRepo;
 
     @Inject
-    public LoadUpcommingMovieList() {
+    LoadUpcommingMovieList() {
+        //used by dagger
     }
 
     public void execute(DisposableObserver<PageResponse<Movie>> observer) {

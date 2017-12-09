@@ -14,4 +14,9 @@
     <string name="no_genres_informed">No Genres Informed</string>
     <string name="no_release_date_informed">No Release Date Informed</string>
     <string name="no_overview_informed">No Overview Informed</string>
+    <string name="action_connect">CONNECT</string>
+    <string name="no_internet_connection">Sorry, there is no internet connection!</string>
+    <string name="action_try_again">TRY AGAIN</string>
+    <string name="unknown_error">Something went wrong, want to try again?</string>
+    <string name="pull_to_refresh">Pull down to refresh movies </string>
 </resources>
