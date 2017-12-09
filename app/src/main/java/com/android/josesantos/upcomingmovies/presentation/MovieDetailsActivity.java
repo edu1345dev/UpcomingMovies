@@ -85,7 +85,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             tvGenres.setText(getString(R.string.no_genres_informed));
         }
 
-        if (movie.getOverview() != null) {
+        if (!movie.getOverview().equals("")) {
             tvOverview.setText(movie.getOverview());
         } else {
             tvOverview.setText(getString(R.string.no_overview_informed));
