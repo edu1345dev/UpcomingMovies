@@ -1,4 +1,4 @@
-package com.android.josesantos.upcomingmovies.presentation.adapter;
+package com.android.josesantos.upcomingmovies.presentation;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.josesantos.upcomingmovies.R;
+import com.android.josesantos.upcomingmovies.data.entities.Movie;
 import com.android.josesantos.upcomingmovies.data.entities.MovieWrapper;
 import com.android.josesantos.upcomingmovies.presentation.MainActivity;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesFragment;
@@ -60,26 +61,47 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void initViews(MovieWrapper movieWrapper) {
+        Movie movie = movieWrapper.getMovie();
+
         RequestOptions requestOptions = new RequestOptions()
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .centerCrop();
 
-        if (movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()) !=null){
+        if (movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()) !=null){
             Glide.with(this)
                     .setDefaultRequestOptions(requestOptions)
-                    .load(movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
+                    .load(movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
                     .into(ivBackground);
         }
 
         Glide.with(this)
-                .load(movieWrapper.getMovie().getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
+                .load(movie.getPosterCompleteUrl(movieWrapper.getMovieConfiguration()))
                 .into(ivPoster);
 
-        tvName.setText(movieWrapper.getMovie().getTitle());
-        tvRelease.setText(movieWrapper.getMovie().getReleaseDate());
-        tvGenres.setText(movieWrapper.getGenres().getGenresText(movieWrapper.getMovie().getGenreIds()));
-        tvOverview.setText(movieWrapper.getMovie().getOverview());
+        if (movie.getTitle() != null){
+            tvName.setText(movie.getTitle());
+        }else {
+            tvName.setText(getString(R.string.no_name_informed));
+        }
+
+        if (movie.getReleaseDate() != null){
+            tvRelease.setText(movie.getReleaseDate());
+        }else {
+            tvRelease.setText(getString(R.string.no_release_date_informed));
+        }
+
+        if (!movie.getGenreIds().isEmpty()){
+            tvGenres.setText(movieWrapper.getGenres().getGenresText(movie.getGenreIds()));
+        }else {
+            tvGenres.setText(getString(R.string.no_genres_informed));
+        }
+
+        if (movie.getOverview() != null){
+            tvOverview.setText(movie.getOverview());
+        }else {
+            tvOverview.setText(getString(R.string.no_overview_informed));
+        }
     }
 
 }

@@ -73,24 +73,21 @@ public class UpcommingMoviesAdapter extends RecyclerView.Adapter<UpcommingMovies
                 .into(holder.background);
 
         if (movie.getTitle() != null){
-            holder.name.setVisibility(View.VISIBLE);
             holder.name.setText(movie.getTitle());
         }else {
-            holder.name.setVisibility(View.GONE);
+            holder.name.setText(R.string.no_name_informed);
         }
 
         if (!movie.getGenreIds().isEmpty()){
-            holder.genres.setVisibility(View.VISIBLE);
             holder.genres.setText(genres.getGenresText(movie.getGenreIds()));
         }else {
-            holder.genres.setVisibility(View.GONE);
+            holder.genres.setText(R.string.no_genres_informed);
         }
 
         if (movie.getReleaseDate() != null){
-            holder.release.setVisibility(View.VISIBLE);
             holder.release.setText(movie.getReleaseDate());
         }else {
-            holder.release.setVisibility(View.GONE);
+            holder.release.setText(R.string.no_release_date_informed);
         }
 
         holder.itemView.setOnClickListener(view -> {

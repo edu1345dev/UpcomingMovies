@@ -23,9 +23,9 @@ public class UpcommingMoviesContract {
     }
 
     public interface Presenter {
-        void onResume(UpcommingMoviesContract.View view);
+        void onStart(UpcommingMoviesContract.View view);
 
-        void onPause();
+        void onStop();
 
         void onDestroy();
 

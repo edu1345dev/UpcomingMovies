@@ -1,16 +1,12 @@
 package com.android.josesantos.upcomingmovies.presentation;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
@@ -23,6 +19,8 @@ import com.android.josesantos.upcomingmovies.model.usecase.LoadMovieDbConfigurat
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -41,6 +39,9 @@ public class SplashScreenActivity extends BaseActivity {
     @Inject
     GetGenres getGenres;
 
+    @BindView(R.id.iv_splash)
+    ImageView ivSplash;
+
     private boolean isMovieDbConfigCached = false;
     private boolean isGenresCached = false;
 
@@ -50,19 +51,69 @@ public class SplashScreenActivity extends BaseActivity {
 
         setContentView(R.layout.activity_splash_screen);
 
+        ButterKnife.bind(this);
+
         AppApplication.getAppComponent().inject(this);
+
+        applyAnimation();
 
         loadFirstData();
     }
 
+    private void applyAnimation() {
+        Animation zoomIn = AnimationUtils.loadAnimation(this,R.anim.zoom_in);
+        Animation zoomOut = AnimationUtils.loadAnimation(this,R.anim.zoom_out);
+        zoomIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ivSplash.startAnimation(zoomOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        zoomOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ivSplash.startAnimation(zoomIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        ivSplash.setImageDrawable(getDrawable(R.drawable.arqtouch_logo));
+        ivSplash.startAnimation(zoomIn);
+    }
+
     private void loadFirstData() {
         if (isConfigInfoCached()){
-            launchMainActivity();
+            launchMainActivityDelayed();
         }else if (isThereInternetConnection()) {
             loadMovieDbConfig();
         } else {
             showConnectionError();
         }
+    }
+
+    private void launchMainActivityDelayed() {
+        Handler handler =  new Handler();
+        handler.postDelayed(this::launchMainActivity,2000);
     }
 
     private boolean isConfigInfoCached() {

@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/search_container"
         android:layout_width="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/search_background"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
@@ -21,7 +21,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:gravity="center"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:focusable="false">
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"
@@ -44,7 +44,6 @@
             android:id="@+id/rv_upcomming_movies"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="1dp"
             android:clipToPadding="true"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"

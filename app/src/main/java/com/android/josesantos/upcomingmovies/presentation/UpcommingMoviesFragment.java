@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.android.josesantos.upcomingmovies.AppApplication;
 import com.android.josesantos.upcomingmovies.R;
 import com.android.josesantos.upcomingmovies.data.entities.Movie;
-import com.android.josesantos.upcomingmovies.presentation.adapter.MovieDetailsActivity;
 import com.android.josesantos.upcomingmovies.presentation.adapter.OnMovieClickListener;
 import com.android.josesantos.upcomingmovies.presentation.adapter.UpcommingMoviesAdapter;
 import com.android.josesantos.upcomingmovies.presentation.custom.EndlessRecyclerViewScrollListener;
@@ -118,13 +117,7 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(llm) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                String search = searchView.getQuery().toString();
-
-                if (!search.equals("")){
-                    presenter.searchMovies(search);
-                }else {
-                    presenter.loadUpcommingMovies();
-                }
+                handleOnLoadMore();
             }
         };
 
@@ -133,6 +126,16 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
         mAdapter = new UpcommingMoviesAdapter(presenter.getMovieWrapper(), getContext());
         mAdapter.setOnMovieClickListener(onMovieClickListener);
         mRecycler.setAdapter(mAdapter);
+    }
+
+    private void handleOnLoadMore() {
+        String search = searchView.getQuery().toString();
+
+        if (!search.equals("")){
+            presenter.searchMovies(search);
+        }else {
+            presenter.loadUpcommingMovies();
+        }
     }
 
     public void configureSwipeRefresh() {
@@ -192,25 +195,21 @@ public class UpcommingMoviesFragment extends BaseFragment implements UpcommingMo
     public void onResume() {
         super.onResume();
         if (mAdapter.getMovieList().isEmpty()) {
-            presenter.loadUpcommingMovies();
+            presenter.reloadUpcommingMovies();
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.onResume(this);
+        presenter.onStart(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onPause();
+        presenter.onStop();
+        endlessRecyclerViewScrollListener.resetState();
     }
 
     @Override

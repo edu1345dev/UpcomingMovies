@@ -55,12 +55,12 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
 
 
     @Override
-    public void onResume(UpcommingMoviesContract.View view) {
+    public void onStart(UpcommingMoviesContract.View view) {
         this.view = view;
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
         view.hideLoading();
         view = null;
     }
