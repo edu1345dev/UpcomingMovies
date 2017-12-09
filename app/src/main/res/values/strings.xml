@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">UpcomingMovies</string>
+    <string name="title_activity_movie_details">MovieDetailsActivity</string>
+
+    <string name="title_activity_splash_screen">Movies DB</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="label_genres">Genres</string>
+    <string name="label_release_date">Release Date</string>
+    <string name="label_overview">Overview</string>
+    <string name="hint_search">Search Movie</string>
+    <string name="no_results_found">No results found for\n\n%s</string>
+    <string name="no_name_informed">No Name Informed</string>
+    <string name="no_genres_informed">No Genres Informed</string>
+    <string name="no_release_date_informed">No Release Date Informed</string>
+    <string name="no_overview_informed">No Overview Informed</string>
+    <string name="action_connect">CONNECT</string>
+    <string name="no_internet_connection">Sorry, there is no internet connection!</string>
+    <string name="action_try_again">TRY AGAIN</string>
+    <string name="unknown_error">Something went wrong, want to try again?</string>
+    <string name="pull_to_refresh">Pull down to refresh movies </string>
+</resources>
