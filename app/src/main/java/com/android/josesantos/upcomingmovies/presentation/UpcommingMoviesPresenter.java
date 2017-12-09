@@ -131,37 +131,49 @@ public class UpcommingMoviesPresenter implements UpcommingMoviesContract.Present
         @Override
         public void onNext(PageResponse<Movie> value) {
             Log.d(TAG, "onNext: " + value);
-            if (hasViewAttached()) {
-                if (value.getPage() == 1) {
-                    view.onMoviesReload(value.getResults());
-                } else {
-                    view.onMoviesLoaded(value.getResults());
-                }
-            }
+            handleOnNext(value);
         }
 
         @Override
         public void onError(Throwable e) {
             Log.d(TAG, "onError: " + e);
-            if (e instanceof ConnectException || e instanceof UnknownHostException) {
-                if (hasViewAttached()) {
-                    view.hideLoading();
-                    view.showInternetConnectionError();
-                }
-            } else {
-                if (hasViewAttached()) {
-                    view.hideLoading();
-                    view.showUnknownError();
-                }
-            }
+            handleOnError(e);
 
         }
 
         @Override
         public void onComplete() {
             Log.d(TAG, "onComplete: ");
+            handleOnComplete();
+        }
+    }
+
+    private void handleOnComplete() {
+        if (hasViewAttached()) {
+            view.hideLoading();
+        }
+    }
+
+    private void handleOnNext(PageResponse<Movie> value) {
+        if (hasViewAttached()) {
+            if (value.getPage() == 1) {
+                view.onMoviesReload(value.getResults());
+            } else {
+                view.onMoviesLoaded(value.getResults());
+            }
+        }
+    }
+
+    private void handleOnError(Throwable e) {
+        if (e instanceof ConnectException || e instanceof UnknownHostException) {
             if (hasViewAttached()) {
                 view.hideLoading();
+                view.showInternetConnectionError();
+            }
+        } else {
+            if (hasViewAttached()) {
+                view.hideLoading();
+                view.showUnknownError();
             }
         }
     }

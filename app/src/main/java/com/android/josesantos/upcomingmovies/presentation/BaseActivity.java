@@ -19,13 +19,15 @@ import com.android.josesantos.upcomingmovies.R;
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
     private static final int REQUEST_CODE = 201;
+    private AlertDialog dialogConnetionError;
+    private AlertDialog dialogUnkownError;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isThereInternetConnection()){
-            showConnectionError();
-        }
+//        if (!isThereInternetConnection()){
+//            showConnectionError();
+//        }
     }
 
     public boolean isThereInternetConnection() {
@@ -39,6 +41,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showConnectionError() {
+        if (isDialogConnetionErrorShowing()){
+            return;
+        }
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
         dialogBuilder.setMessage(R.string.no_internet_connection);
@@ -62,10 +68,19 @@ public abstract class BaseActivity extends AppCompatActivity {
             dialogInterface.dismiss();
         });
 
-        dialogBuilder.create().show();
+        dialogConnetionError = dialogBuilder.create();
+        dialogConnetionError.show();
+    }
+
+    private boolean isDialogConnetionErrorShowing() {
+        return dialogConnetionError != null && dialogConnetionError.isShowing();
     }
 
     public void showUnkownError() {
+        if (isDialogUnknownErrorShowing()){
+            return;
+        }
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
         dialogBuilder.setMessage(R.string.unknown_error);
@@ -77,7 +92,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                         }
                 );
 
-        dialogBuilder.create().show();
+        dialogUnkownError = dialogBuilder.create();
+        dialogUnkownError.show();
+    }
+
+    private boolean isDialogUnknownErrorShowing() {
+        return dialogUnkownError != null && dialogUnkownError.isShowing();
     }
 
 

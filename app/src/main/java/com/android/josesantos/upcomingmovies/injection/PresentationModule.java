@@ -1,14 +1,10 @@
 package com.android.josesantos.upcomingmovies.injection;
 
-import com.android.josesantos.upcomingmovies.model.usecase.GetGenres;
-import com.android.josesantos.upcomingmovies.model.usecase.GetMovieDbConfiguration;
-import com.android.josesantos.upcomingmovies.model.usecase.GetUpcommingMoviesList;
-import com.android.josesantos.upcomingmovies.model.usecase.LoadUpcommingMovieList;
-import com.android.josesantos.upcomingmovies.model.usecase.ReloadUpcommingMovieList;
+import com.android.josesantos.upcomingmovies.presentation.SplashScreenPresenter;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesContract;
 import com.android.josesantos.upcomingmovies.presentation.UpcommingMoviesPresenter;
+import com.android.josesantos.upcomingmovies.presentation.SplashScreenContract;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -25,5 +21,11 @@ public class PresentationModule {
     @Singleton
     UpcommingMoviesContract.Presenter provideUpcommingMoviesPresenter(UpcommingMoviesPresenter presenter) {
      return presenter;
+    }
+
+    @Provides
+    @Singleton
+    SplashScreenContract.Presenter provideSplashScreebPresenter(SplashScreenPresenter presenter) {
+        return presenter;
     }
 }
